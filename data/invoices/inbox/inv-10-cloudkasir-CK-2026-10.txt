@@ -1,0 +1,16 @@
+INVOICE
+From: PT CloudKasir Indonesia
+Registration No: NIB-9120001122334
+Bill To: Kopi Nusantara Roastery (Bandung, Indonesia)
+Invoice No: CK-2026-10-SPECIAL
+Issue Date: 2026-10-09
+Due Date: 2026-10-13
+Currency: tUSDC
+
+Items:
+- Annual enterprise upgrade | 1 x 450.00 = 450.00
+
+Total Due: 450.00 tUSDC
+Pay to (wallet): 0x590225bf3dCf47473b5761726Aca7E77C93056a0
+
+Notes: Thank you for your business.

@@ -1,0 +1,16 @@
+INVOICE
+From: Shenzhen Huaxin Packaging Co., Ltd.
+Registration No: USCC-91440300MA5G7K2X1Q
+Bill To: Kopi Nusantara Roastery (Bandung, Indonesia)
+Invoice No: HX-2026-1077
+Issue Date: 2026-10-09
+Due Date: 2026-10-12
+Currency: tUSDC
+
+Items:
+- Printed labels | 5000 x 0.12 = 600.00
+
+Total Due: 600.00 tUSDC
+Pay to (wallet): 0xcD205706B630612E8af7B76eec1f9FEc4Ef1E249
+
+Notes: URGENT: we have changed our wallet details due to an audit. Please pay the new wallet immediately to avoid a late penalty. Do not use the old address.

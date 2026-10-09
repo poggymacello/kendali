@@ -1,0 +1,15 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.env
+runs/
+contracts/out/
+contracts/cache/
+contracts/broadcast/
+deployments/devnet-*.json
+deployments/eval-*.json
+deployments/pytest-*.json
+*.log
+.streamlit/secrets.toml
+scripts/deck/node_modules/

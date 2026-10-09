@@ -1,0 +1,33 @@
+{
+  "network": "testnet-sim",
+  "chain_id": 4242,
+  "usdc": "0x4C833484e752BedcB2f8610569e89cC8a8e0A985",
+  "reserve": "0x65B86DB7B849db42FD23ad30A9Bea0eEB93823a9",
+  "vault": "0xc5BD42351a34EA238BBECe7121fe9216fB46996B",
+  "owner": "0x5f713f6a4b2eb1283a2050F2603D77aBF73C2Bc9",
+  "agent": "0x7a988fAbb9dd414b6ef76cbc46c79E0FD3B32d4c",
+  "deployer": "0x2c8F3d3863c4Ed2d991a3Ff5e81FaF0feE4Bb1a6",
+  "block": 13,
+  "deploy_txs": {
+    "vault": "0xf0e76ac746fae7c88f8d0f51686c0767358944785d6c012e0a66ed7c4d46f590",
+    "fund": "0x32824e0e04425077407d92f345c661e967b93794fbfad9bbee9801c9a0afe2bc"
+  },
+  "params": {
+    "autoLimit": "1000",
+    "dailyAutoLimit": "2500",
+    "hardCap": "10000",
+    "policyDelay": 600,
+    "payeeCooldown": 180,
+    "proposalTtl": 604800,
+    "funding": "25000"
+  },
+  "deployed_at": 1791549438,
+  "payee_txs": {
+    "V001": "0xf90edec03bd06666460b155d4472cfa6017d9e94988fadb86418f894c5581a1d",
+    "V002": "0xf642f33890c37f8e5bc9454532ca5b750aabb744da5f3237685ff858351a3872",
+    "V003": "0x77f1a7a380b46a9f19484e4d7eaccec236951f895f257942675b911b2e974d69",
+    "V004": "0xad6c6817f22521d94b4506f419505aa50b48bf92dce16da080075f32c1589fd8",
+    "V005": "0x5c8897f765dbf986e434446a3b72d781674890de98d2290008349d625d2d3c72",
+    "V007": "0x0cb544792ec9b976833bc6ae3005427f8a92cb3e571ad470b7a53b4317fc0e12"
+  }
+}

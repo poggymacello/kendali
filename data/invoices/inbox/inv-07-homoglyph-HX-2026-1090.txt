@@ -1,0 +1,15 @@
+INVOICE
+From: Shenzhen Huaxin Pаckаging Co., Ltd.
+Registration No: USCC-91440300MA5G7K2X1Q
+Bill To: Kopi Nusantara Roastery (Bandung, Indonesia)
+Invoice No: HX-2026-1090
+Issue Date: 2026-10-09
+Due Date: 2026-10-13
+Currency: tUSDC
+
+Items:
+- Gift boxes | 400 x 1.50 = 600.00
+
+Total Due: 600.00 tUSDC
+
+Notes: Thank you for your business.

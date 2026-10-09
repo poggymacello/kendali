@@ -1,0 +1,138 @@
+{
+  "business": {
+    "name": "Kopi Nusantara Roastery",
+    "city": "Bandung, Indonesia",
+    "profile": "Specialty-coffee roaster exporting to Singapore and Shenzhen; 9 staff; settles B2B payments in a test stablecoin."
+  },
+  "vendors": [
+    {
+      "id": "V001",
+      "legal_name": "Koperasi Tani Kopi Gayo",
+      "aliases": [
+        "KTG Gayo",
+        "Kopi Gayo Cooperative"
+      ],
+      "registration_no": "NIB-1203004567891",
+      "country": "ID",
+      "category": "green coffee beans",
+      "typical_min": "1500",
+      "typical_max": "3000",
+      "callback_contact": "+62 811-6000-1234 (Pak Rahman, finance)",
+      "wallet": "0x918D3223E1F22Ad81A8F1238cf1a0f601364E0f8",
+      "kyb_verified_on": "2026-09-01"
+    },
+    {
+      "id": "V002",
+      "legal_name": "Shenzhen Huaxin Packaging Co., Ltd.",
+      "aliases": [
+        "Huaxin Packaging"
+      ],
+      "registration_no": "USCC-91440300MA5G7K2X1Q",
+      "country": "CN",
+      "category": "packaging",
+      "typical_min": "400",
+      "typical_max": "900",
+      "callback_contact": "+86 755-8800-1200 (Ms. Lin, AR)",
+      "wallet": "0xD287872aBBEB5876A2F784d79eA155c5e03a843e",
+      "kyb_verified_on": "2026-09-01"
+    },
+    {
+      "id": "V003",
+      "legal_name": "Lion City Logistics Pte. Ltd.",
+      "aliases": [
+        "Lion City Logistics"
+      ],
+      "registration_no": "UEN-201912345K",
+      "country": "SG",
+      "category": "freight forwarding",
+      "typical_min": "200",
+      "typical_max": "600",
+      "callback_contact": "+65 6100-2200 (billing desk)",
+      "wallet": "0x7b7EE44a2A7d49B8dfA509EDd19f9a516FE73D1e",
+      "kyb_verified_on": "2026-09-01"
+    },
+    {
+      "id": "V004",
+      "legal_name": "Changi Fulfilment Warehouse Pte. Ltd.",
+      "aliases": [
+        "Changi Fulfilment"
+      ],
+      "registration_no": "UEN-202054321W",
+      "country": "SG",
+      "category": "warehouse rent",
+      "typical_min": "1200",
+      "typical_max": "1200",
+      "callback_contact": "+65 6200-3300 (leasing)",
+      "wallet": "0x948dE50C74A064B60aA273eFFb1CA47f9883a530",
+      "kyb_verified_on": "2026-09-01"
+    },
+    {
+      "id": "V005",
+      "legal_name": "PT CloudKasir Indonesia",
+      "aliases": [
+        "CloudKasir"
+      ],
+      "registration_no": "NIB-9120001122334",
+      "country": "ID",
+      "category": "POS software subscription",
+      "typical_min": "49",
+      "typical_max": "49",
+      "callback_contact": "support@cloudkasir.example",
+      "wallet": "0x590225bf3dCf47473b5761726Aca7E77C93056a0",
+      "kyb_verified_on": "2026-09-01"
+    },
+    {
+      "id": "V006",
+      "legal_name": "CV Bandung Roastery Equipment",
+      "aliases": [
+        "Bandung Roastery Equipment"
+      ],
+      "registration_no": "NIB-8120005566778",
+      "country": "ID",
+      "category": "roasting equipment parts",
+      "typical_min": "200",
+      "typical_max": "800",
+      "callback_contact": "+62 22-7300-4400 (Bu Sari)",
+      "wallet": "0x3A82fBD378e7101BE48643a7c3A839FAa4AEb5dD",
+      "kyb_verified_on": "2026-09-01"
+    },
+    {
+      "id": "V007",
+      "legal_name": "Global Trade Partners Ltd.",
+      "aliases": [
+        "GTP Ltd"
+      ],
+      "registration_no": "REG-GTP-55102",
+      "country": "AE",
+      "category": "commodity broker",
+      "typical_min": "500",
+      "typical_max": "2000",
+      "callback_contact": "+971 4-000-0000",
+      "wallet": "0x907Cb47213eE459975cb4Be0140eCAd4B7Df81CA",
+      "kyb_verified_on": "2026-09-01"
+    }
+  ],
+  "obligations": [
+    {
+      "id": "OBL-SAAS",
+      "vendor_id": "V005",
+      "description": "CloudKasir POS subscription",
+      "amount": "49.00",
+      "day_of_month": 12
+    },
+    {
+      "id": "OBL-RENT",
+      "vendor_id": "V004",
+      "description": "Singapore fulfilment warehouse rent",
+      "amount": "1200.00",
+      "day_of_month": 15
+    },
+    {
+      "id": "OBL-FREIGHT",
+      "vendor_id": "V003",
+      "description": "Freight retainer",
+      "amount": "300.00",
+      "day_of_month": 20
+    }
+  ]
+}

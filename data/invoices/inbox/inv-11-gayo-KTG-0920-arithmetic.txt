@@ -1,0 +1,15 @@
+FAKTUR / INVOICE
+Dari: Koperasi Tani Kopi Gayo
+NIB: NIB-1203004567891
+Kepada: Kopi Nusantara Roastery (Bandung, Indonesia)
+Nomor Faktur: KTG-0920
+Tanggal: 2026-10-09
+Jatuh Tempo: 2026-10-13
+Mata Uang: tUSDC
+
+Rincian:
+- Green beans Arabica Gayo grade 2 (kg) | 200 x 9.00 = 1800.00
+
+Jumlah Tagihan: 2800.00 tUSDC
+
+Catatan: Thank you for your business.

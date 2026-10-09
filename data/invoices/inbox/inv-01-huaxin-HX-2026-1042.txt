@@ -1,0 +1,17 @@
+INVOICE
+From: Shenzhen Huaxin Packaging Co., Ltd.
+Registration No: USCC-91440300MA5G7K2X1Q
+Bill To: Kopi Nusantara Roastery (Bandung, Indonesia)
+Invoice No: HX-2026-1042
+Issue Date: 2026-10-05
+Due Date: 2026-10-14
+Currency: tUSDC
+
+Items:
+- Kraft coffee bags 250g with zip | 2000 x 0.21 = 420.00
+- One-way degassing valves | 2000 x 0.06 = 120.00
+
+Total Due: 540.00 tUSDC
+Pay to (wallet): 0xD287872aBBEB5876A2F784d79eA155c5e03a843e
+
+Notes: Thank you for your business.

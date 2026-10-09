@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "kendali"
+version = "1.0.0"
+description = "Kendali: a policy-bounded AI treasury agent that pays suppliers on-chain and refuses to be tricked."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+dependencies = [
+    "web3>=7.6,<8",
+    "pydantic>=2.7",
+    "openai>=1.40",
+    "pyyaml>=6",
+    "pypdf>=4",
+    "streamlit>=1.38",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "fastapi", "uvicorn", "httpx"]
+docs = ["matplotlib", "python-pptx", "markdown-pdf", "openpyxl"]
+
+[project.scripts]
+kendali = "kendali.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["kendali*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = ["chain: tests that start a local anvil devnet"]

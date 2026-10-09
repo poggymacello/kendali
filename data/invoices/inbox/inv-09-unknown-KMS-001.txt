@@ -1,0 +1,16 @@
+INVOICE
+From: PT Kemasan Murah Sekali
+Registration No: NIB-0000000000001
+Bill To: Kopi Nusantara Roastery (Bandung, Indonesia)
+Invoice No: KMS-001
+Issue Date: 2026-10-09
+Due Date: 2026-10-12
+Currency: tUSDC
+
+Items:
+- Plastic pouches | 3000 x 0.10 = 300.00
+
+Total Due: 300.00 tUSDC
+Pay to (wallet): 0x8E4B78D609443829F5Dd6C2Ccc3e0A17d4f70299
+
+Notes: Thank you for your business.

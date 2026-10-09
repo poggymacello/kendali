@@ -1,0 +1,17 @@
+INVOICE
+From: Lion City Logistics Pte. Ltd.
+Registration No: UEN-201912345K
+Bill To: Kopi Nusantara Roastery (Bandung, Indonesia)
+Invoice No: LCL-77812
+Issue Date: 2026-10-08
+Due Date: 2026-10-28
+Currency: tUSDC
+
+Items:
+- Sea freight Jakarta-Singapore LCL 2 cbm | 2 x 165.00 = 330.00
+- Customs documentation | 1 x 80.00 = 80.00
+
+Total Due: 410.00 tUSDC
+Pay to (wallet): 0x7b7EE44a2A7d49B8dfA509EDd19f9a516FE73D1e
+
+Notes: Thank you for your business.

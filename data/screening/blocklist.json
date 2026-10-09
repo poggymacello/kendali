@@ -1,0 +1,20 @@
+{
+  "note": "SYNTHETIC screening list for the demo. Production: OFAC SDN digital-currency addresses, UN/local regulator lists and commercial screening (e.g. a sanctions oracle), refreshed daily.",
+  "entries": [
+    {
+      "address": "0x907Cb47213eE459975cb4Be0140eCAd4B7Df81CA",
+      "source": "demo-sanctions-list v2026-10-10",
+      "reason": "entity designated after onboarding"
+    },
+    {
+      "address": "0xad85E9D2c05F75C7db6964011d36E8524c97B69A",
+      "source": "demo-sanctions-list v2026-10-10",
+      "reason": "sanctioned mixing service"
+    },
+    {
+      "address": "0xAA2ee13c331F97C262338f617F8E36337D2bb48c",
+      "source": "community-scam-reports",
+      "reason": "reported invoice-fraud collection wallet"
+    }
+  ]
+}

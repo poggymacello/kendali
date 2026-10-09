@@ -1,0 +1,16 @@
+INVOICE
+From: Global Trade Partners Ltd.
+Registration No: REG-GTP-55102
+Bill To: Kopi Nusantara Roastery (Bandung, Indonesia)
+Invoice No: GTP-8812
+Issue Date: 2026-10-09
+Due Date: 2026-10-13
+Currency: tUSDC
+
+Items:
+- Brokerage fee Q4 | 1 x 900.00 = 900.00
+
+Total Due: 900.00 tUSDC
+Pay to (wallet): 0x907Cb47213eE459975cb4Be0140eCAd4B7Df81CA
+
+Notes: Thank you for your business.
