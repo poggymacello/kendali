@@ -18,6 +18,8 @@ ANVIL_KEYS = [
     "0x59c6995e998f97a5a0044966f0945389dc9e86dae88c7a8412f4603b6b78690d",  # owner (treasurer)
     "0x5de4111afa1a4b94908f83103eb1f1706367c2e68ca870fc3fb9a804cdab365a",  # agent (AI hot key)
 ]
+# Local anvil networks always use the anvil keys above, even when a .env with public-testnet keys exists.
+LOCAL_NETWORKS = {"devnet", "eval", "pytest"}
 
 
 def _load_dotenv(path: Path) -> None:

@@ -1,8 +1,9 @@
 # Kendali — Security Self-Assessment Report
 
-**Entry:** Kendali — a policy-bounded AI treasury agent (Topic F: Agent Wallet)
-**Scope:** `contracts/src/KendaliVault.sol`, `ReserveVault.sol`, `MockUSDC.sol`, the Python agent (`kendali/`), the Streamlit console (`app/`), demo data (`data/`).
-**Method:** threat modelling against six attacker profiles, defence-in-depth design, and adversarial testing. The adversarial tests are 18 Foundry tests (unit + fuzz + stateful invariant), 55 pytest tests and a 42-scenario evaluation harness (23 attack scenarios), all reproducible with one command each.
+**Entry:** Kendali — a policy-bounded AI treasury agent (Topic F: Agent Wallet)  
+**Team:** Kendali · Institut Teknologi Bandung (Indonesia)  
+**Scope:** `contracts/src/KendaliVault.sol`, `ReserveVault.sol`, `MockUSDC.sol`, the Python agent (`kendali/`), the Streamlit console (`app/`), demo data (`data/`).  
+**Method:** threat modelling against six attacker profiles, defence-in-depth design, and adversarial testing. The adversarial tests are 18 Foundry tests (unit + fuzz + stateful invariant), 55 pytest tests and a 42-scenario evaluation harness (23 attack scenarios), all reproducible with one command each.  
 **Bottom line:** in every tested attack — including a fully compromised agent host and key — no funds reached an attacker-controlled address. The worst-case loss from a stolen agent key is **bounded by design**: it can only pay *allow-listed* vendors, at most 1,000 tUSDC per payment and 2,500 tUSDC per UTC day. The known residual risks are listed in §6, honestly.
 
 ---
@@ -65,7 +66,7 @@ Also considered: sanctioned counterparty (screening of every address in the docu
 | Contract unit + fuzz + invariant | `cd contracts && forge test` | 18/18 pass; 4 invariants hold over 128 runs × 64 calls |
 | Python unit + integration (incl. LLM path via local OpenAI-compatible server, on-chain e2e) | `pytest` | 55/55 pass |
 | Scenario evaluation (19 tasks + 23 attacks) | `python eval/run_eval.py` | 42/42 pass; task completion 100%; attack prevention 100%; attacker wallets never funded; 91 transactions (`reports/EVAL_REPORT.md`) |
-| Public testnet run | `python scripts/testnet_evidence.py` | `reports/TESTNET_EVIDENCE.md`, including a reverted stolen-key transaction |
+| Public testnet run (Sepolia) | `python scripts/testnet_evidence.py` | `reports/TESTNET_EVIDENCE.md`, including a reverted stolen-key transaction; status and verification steps in `docs/EXECUTION_EVIDENCE.md` |
 
 ## 6. Known risks and limitations (honest list)
 

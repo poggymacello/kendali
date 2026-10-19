@@ -7,7 +7,8 @@ const { applyTheme } = require(process.env.PPTX_SKILL_THEME || "./apply_theme_lo
 const ROOT = path.resolve(__dirname, "..", "..");
 const IMG = (f) => path.join(ROOT, "docs", "img", f);
 const OUT = path.join(ROOT, "submission", "Kendali_FinTechathon2026_Deck.pptx");
-const TEAM = process.env.KENDALI_TEAM || "[TEAM NAME]";
+const TEAM = process.env.KENDALI_TEAM || "Kendali";
+const REPO = process.env.KENDALI_REPO || "github.com/<github-user>/kendali";
 
 const THEME = {
   name: "Kendali",
@@ -301,7 +302,7 @@ card(s, 7.6, 4.1, 5.1, 2.7, HEX.lt2, "repro");
 text(s, [
   { text: "Reproducible by the judges", options: { bold: true, color: HEX.dk1, fontSize: 16, breakLine: true } },
   { text: "python eval/run_eval.py   ·   pytest   ·   forge test", options: { fontFace: "Courier New", fontSize: 12, color: HEX.accent1, breakLine: true } },
-  { text: "Each scenario runs on a fresh EVM snapshot: 91 real transactions in 23 seconds, no API key needed. Public-testnet hashes in reports/TESTNET_EVIDENCE.md.", options: { fontSize: 13, color: "334155" } },
+  { text: "Each scenario runs on a fresh EVM snapshot: 91 real transactions in about 20 seconds, no API key needed. Public-testnet hashes in reports/TESTNET_EVIDENCE.md.", options: { fontSize: 13, color: "334155" } },
 ], { x: 7.85, y: 4.3, w: 4.6, h: 2.35, paraSpaceAfter: 8 });
 s.addNotes(
   "Everything we just claimed is measured. Our evaluation harness runs forty-two scenarios — nineteen legitimate tasks and twenty-three attacks — each on a fresh blockchain snapshot. All forty-two pass: one hundred percent task completion, one hundred percent attack prevention, and zero tokens to any attacker wallet. " +
@@ -399,7 +400,7 @@ next.forEach(([h, d], i) => {
     { x: 1.6, y, w: 10.8, h: 0.75, fontSize: 18, valign: "middle" });
 });
 text(s, `Thank you — Team ${TEAM} · Institut Teknologi Bandung`, { x: 0.8, y: 6.05, w: 8, h: 0.45, fontSize: 17, bold: true, color: "5EEAD4" });
-text(s, "Code, evaluation and evidence: github.com/[team]/kendali", { x: 0.8, y: 6.5, w: 8, h: 0.4, fontSize: 14, color: "94A3B8" });
+text(s, `Code, evaluation and evidence: ${REPO}`, { x: 0.8, y: 6.5, w: 8, h: 0.4, fontSize: 14, color: "94A3B8" });
 s.addNotes(
   "To close: Kendali shows that an AI agent can be a real financial participant — paying, approving, saving — while every dangerous power stays behind rules it cannot argue with, and every decision stays verifiable. " +
   "Our path to production is a multisig owner with session keys, live sanctions feeds and settlement in regulated instruments such as tokenized deposits on permissioned EVM chains like FISCO BCOS, piloting with cross-border small businesses between Indonesia, Singapore and Shenzhen. " +

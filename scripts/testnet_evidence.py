@@ -101,6 +101,8 @@ def main() -> None:
         md.append(f"| {i} | {e['step']} | {links} | {e['note']} |")
     (ROOT / "reports" / "TESTNET_EVIDENCE.md").write_text("\n".join(md) + "\n", encoding="utf-8")
     print("wrote reports/TESTNET_EVIDENCE.md")
+    print("Next: commit reports/TESTNET_EVIDENCE.md, reports/testnet-evidence.json and deployments/{0}-{1}.json.".format(s.network, chain.chain_id))
+    print("Tip: rename .env to .env.sepolia afterwards so the local demo (devnet + Streamlit) uses the devnet again.")
 
 
 if __name__ == "__main__":

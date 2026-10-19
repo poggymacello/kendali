@@ -96,7 +96,7 @@ def deploy_all(chain: Chain, registry: Registry, profile: str = "devnet", payees
     return dep
 
 
-def _ensure_gas(chain: Chain, min_eth: float = 0.02) -> None:
+def _ensure_gas(chain: Chain, min_eth: float = 0.01) -> None:
     """On public testnets the deployer tops up the owner and agent accounts with gas."""
     if chain.chain_id == 31337:
         return
@@ -104,17 +104,30 @@ def _ensure_gas(chain: Chain, min_eth: float = 0.02) -> None:
     for acct in (chain.owner, chain.agent):
         bal = w3.eth.get_balance(acct.address)
         if bal < w3.to_wei(min_eth, "ether"):
+            value = w3.to_wei(min_eth, "ether") - bal
+            # Do not hard-code 21,000 gas: since the Amsterdam upgrade, a transfer that creates a new
+            # account costs far more (Sepolia estimates ~207k), and some nodes (anvil forks) under-estimate
+            # it. Unused gas is refunded, so a generous limit is free.
+            try:
+                est = w3.eth.estimate_gas({"from": chain.deployer.address, "to": acct.address, "value": value})
+            except Exception:  # noqa: BLE001 - fall back to the floor below
+                est = 0
+            base = w3.eth.get_block("latest").get("baseFeePerGas", 0) or 0
+            tip = w3.to_wei(1, "gwei")
             tx = {
                 "to": acct.address,
-                "value": w3.to_wei(min_eth, "ether") - bal,
+                "value": value,
                 "nonce": w3.eth.get_transaction_count(chain.deployer.address, "pending"),
                 "chainId": chain.chain_id,
-                "gas": 21000,
-                "maxFeePerGas": w3.eth.gas_price * 2,
-                "maxPriorityFeePerGas": w3.to_wei(1, "gwei"),
+                "gas": max(int(est * 1.5), 400_000),
+                # maxFee must cover base fee + tip (gas_price * 2 can be below a 1 gwei tip on Sepolia)
+                "maxFeePerGas": base * 2 + tip,
+                "maxPriorityFeePerGas": tip,
             }
             signed = chain.deployer.sign_transaction(tx)
-            w3.eth.wait_for_transaction_receipt(w3.eth.send_raw_transaction(signed.raw_transaction))
+            receipt = w3.eth.wait_for_transaction_receipt(w3.eth.send_raw_transaction(signed.raw_transaction), timeout=300)
+            if receipt["status"] != 1:
+                raise RuntimeError(f"gas top-up to {acct.address} failed (tx {Web3.to_hex(receipt['transactionHash'])})")
 
 
 def seed_devnet(chain: Chain, registry: Registry) -> dict:

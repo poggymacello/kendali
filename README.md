@@ -7,7 +7,14 @@ Kendali is an AI agent that runs the payables and treasury of a small cross-bord
 
 It does all of this without being trickable: business-email-compromise, prompt injection, look-alike wallets, sanctioned counterparties and even a **stolen agent key** cannot move funds to an attacker. The hard limits live in a smart contract, not in the prompt.
 
-*FinTechathon 2026 — International Track, Topic F (Agent Wallet).*
+| | |
+|---|---|
+| Competition | 2026 Shenzhen FinTechathon — International Track (AI) |
+| Topic | **F — Agent Wallet** (autonomous on-chain wallet) |
+| Team | **Kendali** · Institut Teknologi Bandung, Indonesia |
+| Project | Kendali — a policy-bounded AI treasury agent |
+| Repository | `https://github.com/<github-user>/kendali` <!-- SET-REPO-URL: replace with the real URL, or run scripts/finalize_submission.py --> |
+| One line | An AI agent that pays suppliers on-chain and runs a small business treasury, and cannot be tricked into losing the money it controls. |
 
 ![Architecture](docs/img/architecture.png)
 
@@ -25,18 +32,19 @@ Reports: [`reports/EVAL_REPORT.md`](reports/EVAL_REPORT.md) · [`docs/TECHNICAL_
 
 ## Quick start (≈5 minutes)
 
-**Requirements:** Python 3.10+, [Foundry](https://getfoundry.sh) (for `anvil` and `forge`), Git.
+**Requirements:** Python 3.10+ (tested with 3.11.9 and 3.12.8), [Foundry](https://getfoundry.sh) 1.x (for `anvil` and `forge`; tested with 1.8.5), Git. Tested on Windows 11; Linux/macOS use the same commands. No API key and no real funds are needed.
 
 ```bash
-git clone <repo-url> kendali && cd kendali
+git clone https://github.com/<github-user>/kendali.git kendali && cd kendali
 python -m venv .venv
 # Windows: .venv\Scripts\activate     macOS/Linux: source .venv/bin/activate
 pip install -e ".[dev,docs]"
 
 # 1) reproducible evaluation: starts its own devnet, runs 42 scenarios, writes reports/
+#    (expected: 42/42 pass, task completion 100%, attack prevention 100%)
 python eval/run_eval.py
 
-# 2) tests
+# 2) tests (expected: 55 passed / 18 passed)
 pytest
 cd contracts && forge test && cd ..
 
@@ -74,9 +82,10 @@ python eval/run_eval.py --llm
 ### Public testnet evidence
 ```bash
 python scripts/new_testnet_keys.py --rpc https://ethereum-sepolia-rpc.publicnode.com --network sepolia
-# fund the printed deployer address with test ETH, then:
-python scripts/testnet_evidence.py   # writes reports/TESTNET_EVIDENCE.md with explorer links
+# fund the printed deployer address with test ETH (0.1 Sepolia ETH is plenty), then:
+python scripts/testnet_evidence.py   # ~6 minutes; writes reports/TESTNET_EVIDENCE.md with explorer links
 ```
+Keys are written to `.env`, which is git-ignored. Never reuse them on mainnet. While `.env` exists, the CLI and the Streamlit console talk to Sepolia; rename it (e.g. to `.env.sepolia`) to go back to the local devnet demo. `pytest`, `eval/run_eval.py` and `python -m kendali devnet` always use the local anvil keys. What each transaction proves is explained in [`docs/EXECUTION_EVIDENCE.md`](docs/EXECUTION_EVIDENCE.md).
 
 ## How it works
 
@@ -103,9 +112,21 @@ tests/      pytest suite (55 tests)
 app/        Streamlit console (chat, invoices, owner approvals, treasury, audit, guardrails red-team)
 data/       synthetic vendor master, screening list, invoice inbox (13 invoices incl. PDF and attacks)
 docs/       technical documentation, security self-assessment, execution evidence, diagrams
+submission/ pitch deck, demo-video script, registration email draft, submission checklist
 reports/    evaluation and testnet evidence
 scripts/    data generator, diagram renderer, artifact export, testnet keys + evidence
 ```
+
+## Submission package (FinTechathon checklist)
+
+| Required item | Where |
+|---|---|
+| 1. Technical documentation (architecture, core algorithms, security design) | [`docs/TECHNICAL_DOCUMENTATION.md`](docs/TECHNICAL_DOCUMENTATION.md) |
+| 2. Presentation deck (≤ 10 min) | [`submission/Kendali_FinTechathon2026_Deck.pptx`](submission/Kendali_FinTechathon2026_Deck.pptx) (12 slides, speaker notes ≈ 8–9.5 min) |
+| 3. Demo video (≤ 5 min) | script: [`submission/DEMO_VIDEO_SCRIPT.md`](submission/DEMO_VIDEO_SCRIPT.md) |
+| 4. Source code, README, deployment instructions, test cases | this repository · [Quick start](#quick-start-5-minutes) · `tests/`, `contracts/test/`, `eval/scenarios.yaml` |
+| 5. Security self-assessment (permission tiers, known risks) | [`docs/SECURITY_SELF_ASSESSMENT.md`](docs/SECURITY_SELF_ASSESSMENT.md) |
+| 6. Execution evidence (Topic F: real on-chain transaction hashes) | [`docs/EXECUTION_EVIDENCE.md`](docs/EXECUTION_EVIDENCE.md) · [`reports/TESTNET_EVIDENCE.md`](reports/TESTNET_EVIDENCE.md) |
 
 ## Disclaimer
 All companies, people, wallets and the screening list are **synthetic**. `tUSDC` is a valueless test token. The contracts are unaudited; do not use them with real funds.

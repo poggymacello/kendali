@@ -1,7 +1,7 @@
 # Kendali — Technical Documentation
 
-**Team:** [TEAM NAME] · Institut Teknologi Bandung (Indonesia)
-**Track:** FinTechathon 2026 International Track · **Topic F — Agent Wallet (autonomous on-chain wallet)**
+**Team:** Kendali · Institut Teknologi Bandung (Indonesia) · **Repository:** `https://github.com/<github-user>/kendali` <!-- SET-REPO-URL -->  
+**Track:** FinTechathon 2026 International Track · **Topic F — Agent Wallet (autonomous on-chain wallet)**  
 **One line:** Kendali is an AI treasury agent for small businesses. It reads invoices and instructions, pays suppliers on-chain and runs the treasury on its own, and it cannot be tricked into losing the money it controls.
 
 ---
@@ -133,13 +133,13 @@ Before an individual payment that exceeds liquid cash, the agent first withdraws
 | Foundry: 17 unit/fuzz tests + 4 invariants | **18/18 pass** |
 | pytest: security, extraction (EN/ID/PDF), NLU, policy, audit, LLM path (local OpenAI-compatible server), on-chain e2e | **55/55 pass** |
 | Scenario harness: 19 tasks + 23 attacks on a fresh EVM snapshot each | **42/42 pass** · task completion **100%** · attack prevention **100%** · attacker wallets never funded · 91 transactions |
-| Public-testnet evidence run | `reports/TESTNET_EVIDENCE.md` |
+| Public-testnet evidence run (Sepolia) | `reports/TESTNET_EVIDENCE.md`; method and verification steps in `docs/EXECUTION_EVIDENCE.md` |
 
 The scenario harness is deterministic and needs no API key. `python eval/run_eval.py --llm` repeats it with any configured model.
 
 ## 8. Deployment
 * **Local:** `python -m kendali devnet` (anvil + deploy + seed), `streamlit run app/streamlit_app.py`.
-* **Public testnet:** `python scripts/new_testnet_keys.py --rpc <RPC>`, fund the printed address, then `python scripts/testnet_evidence.py`.
+* **Public testnet:** `python scripts/new_testnet_keys.py --rpc https://ethereum-sepolia-rpc.publicnode.com --network sepolia`, fund the printed deployer address with Sepolia ETH, then `python scripts/testnet_evidence.py` (see `docs/EXECUTION_EVIDENCE.md`).
 * **Chain-agnostic:** standard Solidity 0.8.24 (Cancun) and any ERC-20 settlement asset. Production candidates are permissioned EVM-compatible chains such as FISCO BCOS, and settlement in tokenized deposits, licensed stablecoins or CBDC pilots. Portability to FISCO BCOS has not been tested yet; see the security report, R6.
 
 ## 9. Roadmap
@@ -154,6 +154,6 @@ The scenario harness is deterministic and needs no API key. `python eval/run_eva
 contracts/   Solidity (src, test, artifacts)      kendali/   Python agent package
 eval/        scenarios.yaml + run_eval.py           tests/     pytest suite
 app/         Streamlit console                      scripts/   data, diagrams, testnet evidence
-data/        vendor master, screening list, inbox   docs/      this document, security report
+data/        vendor master, screening list, inbox   docs/      this document, security report, execution evidence
 reports/     evaluation + testnet evidence
 ```

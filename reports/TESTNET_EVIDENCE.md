@@ -1,4 +1,6 @@
-# Kendali — Public Testnet Execution Evidence (testnet-sim, chain 4242)
+# Kendali — Execution Evidence: LOCAL SIMULATION (testnet-sim, chain 4242)
+
+> **Not public-chain evidence.** This table comes from a run on a *local simulated chain* (chain id 4242) with the same script and testnet timing profile. It will be **replaced** by the public **Ethereum Sepolia** run (`python scripts/testnet_evidence.py`), which regenerates this file with Sepolia Etherscan links. Status and verification steps: [`docs/EXECUTION_EVIDENCE.md`](../docs/EXECUTION_EVIDENCE.md).
 
 Generated 2026-10-09T12:40:57.456631+00:00. Vault: `0xc5BD42351a34EA238BBECe7121fe9216fB46996B`
 

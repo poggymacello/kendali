@@ -13,3 +13,13 @@ deployments/pytest-*.json
 *.log
 .streamlit/secrets.toml
 scripts/deck/node_modules/
+.venv-*/
+*.egg-info/
+.env.*
+*.key
+deployments/*rehearsal*.json
+# personal data for the registration: never commit
+submission/*TOFILL*.xlsx
+submission/*FILLED*
+submission/private/
+submission/pdf/

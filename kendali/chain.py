@@ -14,7 +14,7 @@ from eth_account.signers.local import LocalAccount
 from web3 import Web3
 from web3.exceptions import ContractCustomError, ContractLogicError
 
-from .config import ARTIFACTS_DIR, DEPLOYMENTS_DIR, ROOT, Settings
+from .config import ANVIL_KEYS, ARTIFACTS_DIR, DEPLOYMENTS_DIR, LOCAL_NETWORKS, ROOT, Settings
 
 COMMITTED_ARTIFACTS = ROOT / "contracts" / "artifacts"
 
@@ -63,9 +63,13 @@ class Chain:
     def __init__(self, settings: Settings, deployment: dict | None = None, load: bool = True):
         self.settings = settings
         self.w3 = Web3(Web3.HTTPProvider(settings.rpc_url, request_kwargs={"timeout": 60}))
-        self.deployer: LocalAccount = Account.from_key(settings.deployer_key)
-        self.owner: LocalAccount = Account.from_key(settings.owner_key)
-        self.agent: LocalAccount = Account.from_key(settings.agent_key)
+        keys = (settings.deployer_key, settings.owner_key, settings.agent_key)
+        if settings.network in LOCAL_NETWORKS:
+            # never sign local devnet transactions with (or leak) public-testnet keys from .env
+            keys = tuple(ANVIL_KEYS)
+        self.deployer: LocalAccount = Account.from_key(keys[0])
+        self.owner: LocalAccount = Account.from_key(keys[1])
+        self.agent: LocalAccount = Account.from_key(keys[2])
         self._chain_id: int | None = None
         self.artifacts = {n: load_artifact(n) for n in ("MockUSDC", "ReserveVault", "KendaliVault")}
         self._errors = self._build_error_map()

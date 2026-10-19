@@ -30,6 +30,6 @@ lines = [
 ] + [f"KENDALI_{n}_KEY={a.key.hex() if a.key.hex().startswith('0x') else '0x' + a.key.hex()}" for n, a in accts.items()]
 env.write_text("\n".join(lines) + "\n", encoding="utf-8")
 print("Wrote .env")
-print("Fund this DEPLOYER address with test ETH from a faucet (~0.15 ETH covers everything):")
+print("Fund this DEPLOYER address with Sepolia test ETH from a faucet (0.05 ETH is enough, 0.1 is comfortable):")
 print("   ", accts["DEPLOYER"].address)
 print("Owner:", accts["OWNER"].address, " Agent:", accts["AGENT"].address, "(topped up automatically by the deployer)")
