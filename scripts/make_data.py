@@ -59,6 +59,45 @@ OBLIGATIONS = [
 ]
 
 
+# Open purchase orders / expected bills (the business's own record of what it ordered). An invoice is paid
+# without a human only if it matches one of these (same vendor, amount within tolerance, call-offs left).
+# Recurring OBLIGATIONS above are their own authority and need no PO.
+PO_TOLERANCE_PCT = "2"
+PURCHASE_ORDERS = [
+    dict(id="PO-2026-0405", vendor_id="V001", description="Green beans Arabica Gayo grade 1, 300 kg (September harvest)",
+         amount="2850.00", issued_on="2026-09-20"),
+    dict(id="PO-2026-0409", vendor_id="V001", description="Green beans Arabica Gayo grade 2, 200 kg", amount="1800.00",
+         issued_on="2026-09-25"),
+    dict(id="PO-2026-0430", vendor_id="V001", description="Green beans Gayo micro-lot, 125 kg", amount="1250.00",
+         issued_on="2026-10-01"),
+    dict(id="PO-2026-0412", vendor_id="V002", description="Kraft bags 250g + degassing valves, 2,000 sets", amount="540.00",
+         issued_on="2026-09-28"),
+    dict(id="PO-2026-0418", vendor_id="V002", description="Printed labels, 5,000 pcs", amount="600.00", issued_on="2026-09-30"),
+    dict(id="PO-2026-0421", vendor_id="V002", description="Kraft bags reorder, 4,000 pcs", amount="840.00", issued_on="2026-10-02"),
+    dict(id="PO-2026-0425", vendor_id="V002", description="Gift sleeves, blanket order: 3 call-offs of 1,000 pcs",
+         amount="950.00", invoices_allowed=3, issued_on="2026-10-03"),
+    dict(id="PO-2026-0410", vendor_id="V003", description="Sea freight JKT-SIN LCL 2 cbm + customs documentation",
+         amount="410.00", issued_on="2026-09-29"),
+    dict(id="PO-2026-0433", vendor_id="V003", description="Sea freight to Singapore, single shipment", amount="300.00",
+         issued_on="2026-10-05"),
+    dict(id="PO-2026-0434", vendor_id="V003", description="Air freight booking for urgent sample shipment", amount="350.00",
+         issued_on="2026-10-07"),
+    dict(id="PO-2026-0415", vendor_id="V006", description="Drum bearing replacement kit x2", amount="380.00",
+         issued_on="2026-10-01"),
+]
+
+
+def write_purchase_orders() -> None:
+    register = {
+        "note": "SYNTHETIC open purchase orders / expected bills for the demo business. Production: synced from the "
+                "ERP / accounting system (PO + goods receipt = three-way match).",
+        "tolerance_pct": PO_TOLERANCE_PCT,
+        "purchase_orders": [{**po, "invoices_allowed": po.get("invoices_allowed", 1), "status": "open"}
+                            for po in PURCHASE_ORDERS],
+    }
+    (DATA / "purchase_orders.json").write_text(json.dumps(register, indent=2), encoding="utf-8")
+
+
 def invoice(frm, reg, no, issue, due, items, total, pay_to=None, notes="Thank you for your business.", lang="en",
             currency="tUSDC", to="Kopi Nusantara Roastery (Bandung, Indonesia)"):
     if lang == "id":
@@ -95,6 +134,7 @@ def main() -> None:
         "city": "Bandung, Indonesia",
         "profile": "Specialty-coffee roaster exporting to Singapore and Shenzhen; 9 staff; settles B2B payments in a test stablecoin.",
     }
+    write_purchase_orders()
     (DATA / "vendors.json").write_text(json.dumps({"business": business, "vendors": vendors, "obligations": OBLIGATIONS},
                                                   indent=2), encoding="utf-8")
 

@@ -35,7 +35,7 @@ Diperbarui: Senin 19 Okt 2026, ±16:00 WIB.
 | 5 | Security self-assessment | ✅ selesai | `docs/SECURITY_SELF_ASSESSMENT.md` |
 | 6 | Bukti eksekusi: **hash transaksi on-chain asli** | 🟡 perlu kamu (isi faucet) | Kunci Sepolia sudah dibuat (`.env`, tidak ikut git). Gladi di fork Sepolia sukses 14/14 langkah. Tinggal isi saldo alamat deployer lalu jalankan 1 perintah |
 
-Hasil verifikasi ulang 19 Okt (Windows 11, Python 3.11.9, Foundry 1.8.5): **pytest 55/55 lulus · forge test 18/18 lulus · eval 42/42 skenario lulus (91 transaksi)**.
+Hasil verifikasi ulang 19 Okt (Windows 11, Python 3.11.9, Foundry 1.8.5): **pytest 84/84 lulus · forge test 18/18 lulus · eval 57/57 skenario lulus (113 transaksi)** (setelah perbaikan red-team).
 
 ---
 
@@ -88,7 +88,7 @@ git commit -m "Add public Sepolia execution evidence"
 Rename-Item .env .env.sepolia    # supaya demo lokal kembali ke devnet
 ```
 
-Kalau faucet gagal sampai Selasa siang: tetap kirim karya. Di email tulis jujur bahwa hash Sepolia menyusul, dan lampirkan `reports/EVAL_REPORT.md` (91 transaksi di devnet lokal). Karya boleh diperbarui sampai tenggat.
+Kalau faucet gagal sampai Selasa siang: tetap kirim karya. Di email tulis jujur bahwa hash Sepolia menyusul, dan lampirkan `reports/EVAL_REPORT.md` (113 transaksi di devnet lokal). Karya boleh diperbarui sampai tenggat.
 
 ### 5. Buat repo GitHub dan push — 10 menit
 1. Buka github.com → **New repository** → nama `kendali` → **Public** → *jangan* centang README/.gitignore/license (sudah ada) → Create.
@@ -96,12 +96,12 @@ Kalau faucet gagal sampai Selasa siang: tetap kirim karya. Di email tulis jujur 
 
 ```powershell
 cd C:\Users\POGGY\Downloads\barengpoggy\FinTechathon2026\kendali
-.\.venv-local\Scripts\python.exe scripts\finalize_submission.py --repo-url https://github.com/USERNAME/kendali --pdf
+.\.venv-local\Scripts\python.exe scripts\finalize_submission.py --repo-url https://github.com/poggymacello/kendali --pdf
 git status                 # pastikan TIDAK ada .env, .venv-local, xlsx, foto paspor
 git add -A
 git commit -m "Set repository URL"
 git branch -M main
-git remote add origin https://github.com/USERNAME/kendali.git
+git remote add origin https://github.com/poggymacello/kendali.git
 git push -u origin main
 ```
 `finalize_submission.py` mengganti placeholder username GitHub di README, dokumen, dan deck (slide 12), lalu membuat PDF lampiran di `submission/pdf/`. Cek `--check` harus menampilkan `0 open placeholder(s)`.

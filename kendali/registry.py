@@ -1,9 +1,10 @@
-"""Vendor master (KYB-verified payees), recurring obligations and the screening blocklist."""
+"""Vendor master (KYB-verified payees), open purchase orders, recurring obligations and the screening blocklist."""
 
 from __future__ import annotations
 
 import hashlib
 import json
+import re
 from dataclasses import dataclass, field
 from datetime import date
 from decimal import Decimal
@@ -11,8 +12,15 @@ from pathlib import Path
 
 from web3 import Web3
 
-from .models import Finding, Obligation, Severity, Vendor
+from .models import Finding, Obligation, PurchaseOrder, Severity, Vendor
 from .security import fold_confusables, is_lookalike, normalize_name
+
+
+def norm_reg(reg: str) -> str:
+    """'UEN-201912345K', 'UEN: 201912345K' and '201912345k' all compare equal."""
+    s = reg.strip().upper()
+    s = re.sub(r"^(UEN|NIB|USCC|NPWP|REG)\b[\s:.\-]*", "", s)
+    return re.sub(r"[^A-Z0-9]", "", s)
 
 
 @dataclass
@@ -28,6 +36,8 @@ class Registry:
     obligations: list[Obligation]
     blocklist: dict[str, BlocklistEntry]
     business: dict = field(default_factory=dict)
+    purchase_orders: list[PurchaseOrder] = field(default_factory=list)
+    po_tolerance_pct: Decimal = Decimal("2")
 
     @classmethod
     def load(cls, data_dir: Path) -> "Registry":
@@ -41,7 +51,24 @@ class Registry:
         blocklist = {
             e["address"].lower(): BlocklistEntry(e["address"].lower(), e["source"], e["reason"]) for e in bl_raw["entries"]
         }
-        return cls(vendors=vendors, obligations=obligations, blocklist=blocklist, business=raw.get("business", {}))
+        # Open purchase orders / expected bills. Missing file = empty register = every invoice needs a human (fail closed).
+        pos: list[PurchaseOrder] = []
+        tol = Decimal("2")
+        po_path = data_dir / "purchase_orders.json"
+        if po_path.exists():
+            po_raw = json.loads(po_path.read_text(encoding="utf-8"))
+            pos = [PurchaseOrder(**po) for po in po_raw.get("purchase_orders", [])]
+            tol = Decimal(str(po_raw.get("tolerance_pct", "2")))
+        return cls(vendors=vendors, obligations=obligations, blocklist=blocklist, business=raw.get("business", {}),
+                   purchase_orders=pos, po_tolerance_pct=tol)
+
+    # ------------------------------------------------------------------ purchase orders
+    def po_by_id(self, po_id: str) -> PurchaseOrder | None:
+        key = re.sub(r"[^A-Z0-9]", "", po_id.upper())
+        return next((po for po in self.purchase_orders if re.sub(r"[^A-Z0-9]", "", po.id.upper()) == key), None)
+
+    def open_pos(self, vendor_id: str) -> list[PurchaseOrder]:
+        return [po for po in self.purchase_orders if po.vendor_id == vendor_id and po.status == "open"]
 
     # ------------------------------------------------------------------ vendors
     def kyb_hash(self, v: Vendor) -> bytes:
@@ -53,11 +80,27 @@ class Registry:
         a = address.lower()
         return next((v for v in self.vendors.values() if v.wallet.lower() == a), None)
 
+    def by_registration(self, registration_no: str | None) -> Vendor | None:
+        if not registration_no:
+            return None
+        key = norm_reg(registration_no)
+        return next((v for v in self.vendors.values() if norm_reg(v.registration_no) == key), None)
+
     def resolve(self, name: str | None, registration_no: str | None) -> tuple[Vendor | None, list[Finding]]:
         """Resolve an invoice issuer to a vendor in the master. Homoglyph tricks are reported, not forgiven."""
         findings: list[Finding] = []
         if not name:
-            return None, [Finding(code="MISSING_VENDOR", severity=Severity.CRITICAL, message="Invoice has no issuer.")]
+            match = self.by_registration(registration_no) if registration_no else None
+            if match is None:
+                return None, [Finding(code="MISSING_VENDOR", severity=Severity.CRITICAL, message="Invoice has no issuer.")]
+            return match, [
+                Finding(
+                    code="VENDOR_NAME_UNREAD",
+                    severity=Severity.HIGH,
+                    message="Issuer name could not be read; vendor identified by registration number only, so a human confirms.",
+                    evidence={"registration_no": registration_no, "master_name": match.legal_name},
+                )
+            ]
         _, had_confusables = fold_confusables(name)
         target = normalize_name(name)
         match = None
@@ -67,7 +110,7 @@ class Registry:
                 match = v
                 break
         if match is None and registration_no:
-            match = next((v for v in self.vendors.values() if v.registration_no == registration_no.strip()), None)
+            match = self.by_registration(registration_no)
             if match:
                 findings.append(
                     Finding(
@@ -86,7 +129,7 @@ class Registry:
                     evidence={"imitates": match.legal_name},
                 )
             )
-        if match and registration_no and registration_no.strip() != match.registration_no:
+        if match and registration_no and norm_reg(registration_no) != norm_reg(match.registration_no):
             findings.append(
                 Finding(
                     code="REGISTRATION_MISMATCH",

@@ -237,7 +237,7 @@ with tabs[5]:
     st.subheader("Three independent guardrail layers")
     st.markdown(
         "1. **Understanding (LLM/NLU)** — produces structured intents and extractions only; documents are treated as data.  \n"
-        "2. **Policy engine (deterministic)** — KYB payee binding, screening, fraud signals, limits, liquidity, routing.  \n"
+        "2. **Policy engine (deterministic)** — KYB payee binding, purchase-order match, screening, fraud signals, limits, liquidity, routing.  \n"
         "3. **KendaliVault (on-chain)** — enforces allow-list, cooling-off, per-payment and daily limits, maker-checker, "
         "time-locked policy changes and a circuit breaker, *even if layers 1 and 2 are compromised*."
     )
@@ -248,6 +248,12 @@ with tabs[5]:
                        "auto-payable from": datetime.fromtimestamp(p["activeFrom"], tz=timezone.utc).strftime("%Y-%m-%d %H:%M") if p["allowed"] else "-",
                        "wallet": v_.wallet})
     st.dataframe(pd.DataFrame(payees), hide_index=True, use_container_width=True)
+    st.markdown("#### Open purchase orders (an invoice without a matching PO goes to the owner)")
+    usage = agent.state.data.get("po_usage", {})
+    st.dataframe(pd.DataFrame([{"PO": po.id, "vendor": agent.registry.vendors[po.vendor_id].legal_name,
+                                "description": po.description, "amount": float(po.amount),
+                                "invoiced": f"{len(usage.get(po.id, []))}/{po.invoices_allowed}"}
+                               for po in agent.registry.purchase_orders]), hide_index=True, use_container_width=True)
     st.markdown("#### Red-team the vault with a stolen agent key (simulation, no funds move)")
     attacker = Web3.to_checksum_address("0x" + Web3.keccak(text="kendali-demo:attacker-wallet").hex()[-40:])
     vf = chain.vault.functions

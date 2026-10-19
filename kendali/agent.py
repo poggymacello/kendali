@@ -69,6 +69,7 @@ class State:
     def __init__(self, path: Path):
         self.path = path
         self.data = json.loads(path.read_text(encoding="utf-8")) if path.exists() else {"invoices": {}, "sources": {}}
+        self.data.setdefault("po_usage", {})  # purchase order id -> payment refs that consumed a call-off
 
     def save(self) -> None:
         self.path.parent.mkdir(parents=True, exist_ok=True)
@@ -136,13 +137,18 @@ class KendaliAgent:
         ledger_status = self.state.data["invoices"].get(ref, {}).get("status") if ref else None
         payee_state = self.chain.payee(vendor.wallet) if vendor else None
         d = self.policy.evaluate_invoice(inv, self.view(), payee_state, ref_used, ledger_status, llm_diffs, llm_flag,
-                                         force=force, pay_ahead_days=pay_ahead_days)
+                                         force=force, pay_ahead_days=pay_ahead_days, po_usage=self.state.data["po_usage"])
         if llm_finding:
             d.findings.append(llm_finding)
         d.llm_used = llm_used
         callback = vendor.callback_contact if vendor else ""
         d.explanation = explain(d, lang, callback)
         result = self.execute(d)
+        final = result.decision.action
+        if ref and d.po_id and final in (Action.EXECUTE, Action.REQUEST_APPROVAL) and not result.error:
+            used = self.state.data["po_usage"].setdefault(d.po_id, [])
+            if ref not in used:
+                used.append(ref)
         if ref:
             self.state.data["invoices"][ref] = {
                 "status": result.decision.action.value,
@@ -151,6 +157,7 @@ class KendaliAgent:
                 "amount": str(inv.total) if inv.total is not None else None,
                 "due_date": inv.due_date.isoformat() if inv.due_date else None,
                 "source": path.name,
+                "po_id": d.po_id,
                 "decision_hash": result.decision_hash,
                 "proposal_id": result.proposal_id,
                 "tx": result.tx_hashes,

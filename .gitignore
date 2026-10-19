@@ -23,3 +23,16 @@ submission/*TOFILL*.xlsx
 submission/*FILLED*
 submission/private/
 submission/pdf/
+# added 19 Oct 2026: broader safety net before making the repo public
+*TOFILL*
+*.env
+.ruff_cache/
+.mypy_cache/
+.ipynb_checkpoints/
+*.zip
+*.tar.gz
+*.7z
+*.exe
+*.dll
+# internal (Indonesian) judge-simulation notes: not part of the public submission
+submission/PENILAIAN_*

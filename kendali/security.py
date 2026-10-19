@@ -2,7 +2,8 @@
 
 * prompt-injection / instruction smuggling inside untrusted documents
 * hidden characters (zero-width, bidi overrides) and homoglyph impersonation
-* social-engineering pressure ("urgent", "new bank details")
+* claims of prior approval / text addressed to an automated reader ("pre-cleared by the owner")
+* social-engineering pressure (changed payment details, threats, urgency attached to a payment demand)
 * address poisoning (look-alike addresses) and blocklist screening
 """
 
@@ -30,17 +31,67 @@ INJECTION_PATTERNS = [
     r"(langsung|otomatis)\s+(bayar|transfer|setujui)\s+tanpa",
 ]
 
-PRESSURE_PATTERNS = [
-    r"\burgent(ly)?\b",
-    r"\bimmediately\b",
-    r"within\s+\d+\s+(hour|hours|minutes)",
-    r"(account|service)\s+will\s+be\s+(suspended|terminated|closed)",
-    r"(changed|updated|new)\s+(our\s+)?(bank|payment|wallet|account)\s+(details|information|address)",
-    r"\bsegera\b",
-    r"hari\s+ini\s+juga",
-    r"(rekening|wallet|alamat)\s+(baru|kami\s+berubah)",
-    r"\bdenda\b",
+# Claims of prior approval, or text addressed to an automated reader. A document can never carry an
+# approval (approvals are owner signatures on-chain), so these route to a human. This is defence-in-depth:
+# patterns can be paraphrased, and fund safety does not depend on them (see SECURITY_SELF_ASSESSMENT.md).
+APPROVAL_CLAIM_PATTERNS = [
+    # addressed to an automated reader ("For the automated accounts-payable tool reading this")
+    r"\b(to|for|attention|attn|dear|hello|hi|note\s+to)\s*:?\s+(the\s+|any\s+|an?\s+|our\s+|your\s+)?"
+    r"(automated|automatic|auto|ai)\b[\w\s/-]{0,40}\b(tool|system|agent|bot|assistant|processor|software|pipeline|workflow|reader)",
+    r"\b(tool|system|agent|bot|software|ai|model|program|assistant)\s+(that\s+is\s+)?(reading|processing|parsing|handling|reviewing)\s+this\b",
+    r"\b(if|when)\s+you\s+are\s+(an?\s+)?(automated|ai|bot|machine|program|language\s+model)",
+    # claims that approval already happened or is not needed
+    r"\b(pre|already)[\s-]?(cleared|approved|authori[sz]ed|signed[\s-]?off|okayed)\b",
+    r"\b(approved|cleared|authori[sz]ed|okayed|signed\s+off|confirmed)\s+(already\s+)?(by|with)\s+(the\s+|your\s+)?"
+    r"(owner|ceo|director|boss|management|treasurer|finance|cfo|founder)",
+    r"\bno\s+(further\s+|additional\s+|extra\s+|other\s+)?(sign[\s-]?off|approval|review|check|verification|confirmation|call[\s-]?back)s?"
+    r"\s+(is\s+|are\s+)?(needed|required|necessary)",
+    r"\b(no\s+need|not\s+necessary|unnecessary|don'?t\s+need)\s+to\s+(check|verify|review|approve|confirm|call|wait)",
+    # Bahasa Indonesia (formal + chat slang)
+    r"\b(sudah|udah|dah|telah)\s+(di\s*)?(acc|disetujui|approve|diapprove|approved|diotorisasi)\b",
+    r"\b(oke|ok|okay|acc|disetujui|setuju|approve)\s+(dari|oleh|sama|ama)\s+(bos|boss|owner|pemilik|atasan|direktur|pak|bu|"
+    r"bapak|ibu)\b",
+    r"\b(gausah|ga\s*usah|gak\s*usah|nggak\s*usah|ngga\s*usah|enggak\s*usah|ndak\s*usah|tidak\s+usah|tidak\s+perlu|tak\s+perlu|"
+    r"ga\s*perlu|gak\s*perlu|nggak\s*perlu)\b.{0,30}\b(cek|dicek|ngecek|periksa|diperiksa|nunggu|menunggu|tunggu|approval|"
+    r"persetujuan|konfirmasi|dikonfirmasi|verifikasi|diverifikasi|telepon|telpon|ditelpon|izin)",
+    r"\bproses\s+(aja|saja|langsung)\b",
+    r"\b(buat|kepada|halo|hai|yth\.?)\s+(sistem|bot|robot|ai|mesin)(nya)?\b",
 ]
+
+# Social-engineering pressure. Urgency words alone ("urgent air freight", "urgent shipment") describe
+# goods and are NOT flagged; only (a) changed payment details, (b) threats / deadlines, or (c) urgency
+# attached to a demand to pay are.
+PAYMENT_CHANGE_PATTERNS = [
+    r"\b(changed|updated|new|moved|switched|migrated)\s+(our\s+|the\s+)?(bank|banking|payment|wallet|account|remittance|"
+    r"beneficiary|receiving)\s+(details|information|info|address|arrangements?|account|number|wallet)\b",
+    r"\b(changed|updated|moved|switched|migrated)\s+(our\s+|the\s+)?(wallet|bank)\b",
+    r"\bnew\s+(wallet|bank\s+account|beneficiary|receiving\s+address)\b",
+    r"\b(bank|payment|wallet|remittance)\s+(details|information|address|arrangements?)\s+(have|has|were|was)\s+(been\s+)?"
+    r"(changed|updated|moved)",
+    r"\b(do\s+not|don'?t)\s+(use|pay)\s+(the\s+|our\s+)?(old|previous)\s+(address|wallet|account)",
+    r"\b(rekening|wallet|alamat\s+wallet|nomor\s+rekening)\s+(baru|kami\s+berubah|berubah|sudah\s+ganti)",
+    r"\bganti\s+(rekening|wallet)\b",
+]
+THREAT_PATTERNS = [
+    r"\b(account|service|supply|delivery|shipment|subscription)\s+will\s+be\s+(suspended|terminated|closed|stopped|"
+    r"cancell?ed|held|blocked)",
+    r"\b(late|overdue)\s+(fee|penalty|charge|interest)",
+    r"\blegal\s+action\b",
+    r"\bwithin\s+\d+\s+(hour|hours|minutes|jam|menit)\b",
+    r"\bhari\s+ini\s+juga\b",
+    r"\bsekarang\s+juga\b",
+    r"\bdenda\b",
+    r"\b(akan\s+)?(diblokir|diputus|dihentikan)\b",
+]
+_URGENCY = r"(urgent(ly)?|immediately|asap|right\s+away|without\s+delay|as\s+soon\s+as\s+possible|segera|secepatnya)"
+_PAY = r"(pay|paid|payment|transfer|remit|remittance|settle|settlement|wire|send|bayar|dibayar|bayarkan|lunasi|pelunasan|" \
+       r"pembayaran|kirim|transfernya)"
+URGENT_DEMAND_PATTERNS = [
+    rf"\b{_URGENCY}\b\W+(?:\w+\W+){{0,4}}?{_PAY}\b",
+    rf"\b{_PAY}\b\W+(?:\w+\W+){{0,4}}?{_URGENCY}\b",
+    r"\bimmediate\s+(payment|transfer|settlement)\b",
+]
+PRESSURE_PATTERNS = PAYMENT_CHANGE_PATTERNS + THREAT_PATTERNS + URGENT_DEMAND_PATTERNS
 
 HIDDEN_CHARS = {
     "​": "ZERO WIDTH SPACE",
@@ -127,6 +178,19 @@ def scan_document(text: str) -> list[Finding]:
                 code="ENCODED_PAYLOAD",
                 severity=Severity.MEDIUM,
                 message="Document contains a long encoded blob that could carry hidden instructions.",
+            )
+        )
+    claims = [p for p in APPROVAL_CLAIM_PATTERNS if re.search(p, lower)]
+    if claims and not hits:
+        m = re.search(claims[0], lower)
+        snippet = cleaned[max(0, m.start() - 40) : m.end() + 60].replace("\n", " ").strip() if m else ""
+        findings.append(
+            Finding(
+                code="UNVERIFIED_APPROVAL_CLAIM",
+                severity=Severity.HIGH,
+                message=("Document claims prior approval or addresses an automated reader. Documents cannot approve "
+                         "payments; only the owner's on-chain signature can, so a human must review."),
+                evidence={"patterns": len(claims), "snippet": snippet},
             )
         )
     pressure = [p for p in PRESSURE_PATTERNS if re.search(p, lower)]

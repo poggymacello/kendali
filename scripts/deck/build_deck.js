@@ -1,5 +1,6 @@
-// Build the Kendali final-presentation deck (≤10 minutes, 12 slides).
+// Build the Kendali final-presentation deck (≤10 minutes, 13 slides).
 //   cd scripts/deck && npm install && NODE_PATH=./node_modules node build_deck.js
+// The theme step needs the pptx skill helper: set PPTX_SKILL_THEME=/path/to/apply_theme.js (or provide ./apply_theme_local.js).
 const path = require("path");
 const pptxgen = require("pptxgenjs");
 const { applyTheme } = require(process.env.PPTX_SKILL_THEME || "./apply_theme_local.js");
@@ -8,7 +9,7 @@ const ROOT = path.resolve(__dirname, "..", "..");
 const IMG = (f) => path.join(ROOT, "docs", "img", f);
 const OUT = path.join(ROOT, "submission", "Kendali_FinTechathon2026_Deck.pptx");
 const TEAM = process.env.KENDALI_TEAM || "Kendali";
-const REPO = process.env.KENDALI_REPO || "github.com/<github-user>/kendali";
+const REPO = process.env.KENDALI_REPO || "github.com/poggymacello/kendali";
 
 const THEME = {
   name: "Kendali",
@@ -136,7 +137,7 @@ s.addText("The LLM proposes, the policy decides, the contract enforces", { place
 s.addImage({ path: IMG("architecture.png"), x: 1.28, y: 1.75, w: 10.78, h: 5.0 });
 s.addNotes(
   "Here is the architecture. Layer one, Understand: an LLM — any OpenAI-compatible model, including DeepSeek or Qwen — together with a deterministic extractor turns invoices and chat into structured data from a closed set of intents. The model never sees a key and never chooses who gets paid. " +
-  "Layer two, Decide: a deterministic policy engine binds every payee to its verified KYB wallet, screens addresses, detects fraud patterns, checks limits, liquidity and due dates, and simulates the exact transaction before signing. " +
+  "Layer two, Decide: a deterministic policy engine binds every payee to its verified KYB wallet, checks that the invoice matches an open purchase order, screens addresses, detects fraud patterns, checks limits, liquidity and due dates, and simulates the exact transaction before signing. " +
   "Layer three, Enforce: our KendaliVault contract. Even if layers one and two are fully compromised, the agent's key can only pay allow-listed vendors within hard limits. The owner keeps a separate key for approvals, and every decision is hashed and anchored on-chain for audit."
 );
 
@@ -188,7 +189,6 @@ text(s, "Attacker wallets received 0 tUSDC · every block anchored on-chain", { 
 s.addNotes(
   "Here is the live console. The owner types one sentence: pay all invoices due this week. Thirteen invoices are waiting. " +
   "In a few seconds Kendali pays the one invoice that passes every check, sends four to the owner's approval queue — a large one, a new payee still in its cooling-off period, an amount anomaly and an invoice that does not add up — holds one that is not yet due, and blocks seven attacks. " +
-  "The blocked ones include a business-email-compromise invoice with a changed wallet, a prompt injection hidden in the notes, a duplicate reminder, a homoglyph imitation of a real vendor, an address-poisoning decoy, an unknown issuer and a sanctioned counterparty. " +
   "Not a single token reached an attacker, and every blocked decision is anchored on-chain."
 );
 
@@ -200,25 +200,25 @@ const head = (t) => ({ text: t, options: { bold: true, color: "FFFFFF", fill: { 
 const out = (t, col) => ({ text: t, options: { bold: true, color: col } });
 const rows = [
   [head("Attack"), head("How Kendali detects it"), head("Outcome"), head("Test")],
-  ["Business email compromise: new wallet + urgency", "Payee bound to the KYB wallet; pressure language flagged", out("BLOCK", HEX.accent3), "A01"],
-  ["Prompt injection: English, Indonesian, zero-width split", "Deterministic scanner + LLM second opinion; documents are data", out("BLOCK", HEX.accent3), "A02 A14 A15"],
+  ["Business email compromise: changed wallet", "KYB wallet binding; pressure language flagged", out("BLOCK", HEX.accent3), "A01 A24"],
+  ["Real vendor, goods never ordered, “pre-cleared”", "Purchase-order match; approval claims flagged", out("APPROVAL", HEX.accent2), "A25–A27 A32 A33"],
+  ["Prompt injection: English, Indonesian, zero-width split", "Deterministic scanner + LLM second opinion", out("BLOCK", HEX.accent3), "A02 A14 A15"],
   ["Address poisoning (look-alike wallet)", "Prefix/suffix similarity to known vendor wallets", out("BLOCK", HEX.accent3), "A05"],
-  ["Homoglyph vendor name", "Confusable characters folded and flagged", out("BLOCK", HEX.accent3), "A04"],
+  ["Homoglyph or typo-squat vendor name", "Confusables folded; name vs registration no.", out("BLOCK", HEX.accent3), "A04 A31 A34"],
   ["Sanctioned counterparty (listed after onboarding)", "Screening of every address at payment time", out("BLOCK", HEX.accent3), "A07"],
   ["Duplicate “reminder” invoice", "Payment reference must be unique on-chain", out("BLOCK", HEX.accent3), "A03"],
   ["Inflated amount · bad arithmetic · above hard cap", "Vendor history, line-item maths, absolute cap", out("APPROVAL / BLOCK", HEX.accent2), "A08 A09 A23"],
-  ["Chat: fake owner, raw address, raise limit, allowance", "Mandate checks run before — and override — the LLM", out("REFUSE", "7C3AED"), "A10–A13"],
+  ["Chat: fake owner, raw address, limits, “approve all”", "Mandate checks run before — and override — the LLM", out("REFUSE", "7C3AED"), "A10–A13 A30 A35"],
   ["Stolen agent key: 6 on-chain attack variants", "KendaliVault rejects the transaction", out("REVERT", HEX.accent1), "A16–A21"],
-  ["Tampering with the local audit log", "Hash chain + on-chain decision anchors", out("DETECTED", HEX.accent1), "A22"],
 ];
 s.addTable(rows, {
-  x: 0.6, y: 1.8, w: 12.1, colW: [4.2, 4.95, 1.75, 1.2], fontSize: 13, fontFace: "Calibri", color: "1E293B",
+  x: 0.6, y: 1.8, w: 12.1, colW: [4.25, 4.35, 1.95, 1.55], fontSize: 13, fontFace: "Calibri", color: "1E293B",
   border: { type: "solid", pt: 0.75, color: "E2E8F0" }, rowH: 0.44, valign: "middle", autoPage: false,
   fill: { color: "FFFFFF" },
 });
 s.addNotes(
-  "We attacked our own agent systematically: twenty-three attack scenarios. Document-level attacks such as business email compromise, prompt injection in English and Indonesian — even split with invisible zero-width characters — address poisoning, homoglyph names, sanctioned vendors and duplicates are all blocked. " +
-  "Suspicious but possibly legitimate cases, like an inflated amount, go to a human instead of being paid. " +
+  "We attacked our own agent systematically: thirty-five attack scenarios. Document-level attacks such as business email compromise, prompt injection in English and Indonesian — even split with invisible zero-width characters — address poisoning, homoglyph names, sanctioned vendors and duplicates are all blocked. " +
+  "A fake invoice from a real vendor, sent to the right wallet but for goods we never ordered, is caught by purchase-order matching and goes to the owner, even when its notes claim the owner already approved it. " +
   "Chat attacks — pretending to be the owner, asking to pay a raw address, to raise a limit or to grant a token allowance — are refused by deterministic mandate checks that the LLM cannot override. " +
   "And with a stolen agent key, all six on-chain attack variants revert. Even tampering with our own audit log is detected."
 );
@@ -270,18 +270,18 @@ text(s, [
   { text: "attacker never paid · daily outflow ≤ limit · governance unchanged · custody conserved", options: { color: "334155" } },
 ], { x: 7.95, y: 5.2, w: 4.6, h: 1.3, fontSize: 13 });
 s.addNotes(
-  "This is the contract layer, KendaliVault. On the left you see our live red-team button: we sign attacks with the agent's own key — pay the attacker, pay above the limit, add a payee, raise limits, approve our own proposal, unpause — and the contract rejects every one, with a precise custom error. " +
+  "This is the contract layer, KendaliVault. On the left is our live red-team button: we sign attacks with the agent's own key, and the contract rejects every one with a precise custom error. " +
   "The rules are simple: an allow-list with cooling-off, solo limits per payment and per day, owner approval above that, a two-day timelock on loosening, and a circuit breaker. " +
-  "We did not just unit-test this. Stateful fuzzing throws thousands of random call sequences at the vault, and four invariants always hold: the attacker is never paid, daily outflow never exceeds the limit, governance never changes and custody is conserved."
+  "Stateful fuzzing throws thousands of random call sequences at the vault, and four invariants always hold: the attacker is never paid, daily outflow never exceeds the limit, governance never changes and custody is conserved."
 );
 
 // ================================================================== 9 EVALUATION
 pres.addSection({ title: "Evidence" });
 s = pres.addSlide({ masterName: "KD_CONTENT", sectionTitle: "Evidence" });
-s.addText("Measured, not claimed: 42 of 42 scenarios pass", { placeholder: "title" });
+s.addText("Measured, not claimed: 57 of 57 scenarios pass", { placeholder: "title" });
 const stats = [
-  ["100%", "task completion", "19 of 19 legitimate tasks done end-to-end", HEX.accent1],
-  ["100%", "attack prevention", "23 of 23 attacks stopped or safely routed", HEX.accent3],
+  ["100%", "task completion", "22 of 22 legitimate tasks done end-to-end", HEX.accent1],
+  ["100%", "attack prevention", "35 of 35 attacks stopped or safely routed", HEX.accent3],
   ["0", "tUSDC to attackers", "in every scenario, including a stolen key", HEX.dk1],
 ];
 stats.forEach(([big, label, sub, col], i) => {
@@ -291,7 +291,7 @@ stats.forEach(([big, label, sub, col], i) => {
   text(s, label, { x: x + 0.3, y: 2.88, w: 3.3, h: 0.35, fontSize: 16, bold: true, color: HEX.dk1 });
   text(s, sub, { x: x + 0.3, y: 3.23, w: 3.3, h: 0.5, fontSize: 13, color: HEX.accent5 });
 });
-s.addChart(pres.ChartType.bar, [{ name: "passing", labels: ["Smart-contract tests", "Python tests", "Evaluation scenarios"], values: [18, 55, 42] }], {
+s.addChart(pres.ChartType.bar, [{ name: "passing", labels: ["Smart-contract tests", "Python tests", "Evaluation scenarios"], values: [18, 84, 57] }], {
   x: 0.6, y: 4.1, w: 6.6, h: 2.7, barDir: "bar", chartColors: [HEX.accent1], showValue: true, dataLabelPosition: "outEnd",
   dataLabelColor: "1E293B", dataLabelFontSize: 12, dataLabelFontFace: "+mn-lt",
   showTitle: true, title: "Tests passing (all suites 100% green)", titleFontSize: 13, titleColor: "1E293B", titleFontFace: "+mn-lt",
@@ -302,11 +302,12 @@ card(s, 7.6, 4.1, 5.1, 2.7, HEX.lt2, "repro");
 text(s, [
   { text: "Reproducible by the judges", options: { bold: true, color: HEX.dk1, fontSize: 16, breakLine: true } },
   { text: "python eval/run_eval.py   ·   pytest   ·   forge test", options: { fontFace: "Courier New", fontSize: 12, color: HEX.accent1, breakLine: true } },
-  { text: "Each scenario runs on a fresh EVM snapshot: 91 real transactions in about 20 seconds, no API key needed. Public-testnet hashes in reports/TESTNET_EVIDENCE.md.", options: { fontSize: 13, color: "334155" } },
+  { text: "Each scenario runs on a fresh EVM snapshot: 113 real transactions in about 25 seconds, no API key needed. Public-testnet hashes in reports/TESTNET_EVIDENCE.md.", options: { fontSize: 13, color: "334155" } },
 ], { x: 7.85, y: 4.3, w: 4.6, h: 2.35, paraSpaceAfter: 8 });
 s.addNotes(
-  "Everything we just claimed is measured. Our evaluation harness runs forty-two scenarios — nineteen legitimate tasks and twenty-three attacks — each on a fresh blockchain snapshot. All forty-two pass: one hundred percent task completion, one hundred percent attack prevention, and zero tokens to any attacker wallet. " +
-  "Underneath that sit eighteen smart-contract tests including fuzzing and invariants, and fifty-five Python tests, including the LLM path and an end-to-end on-chain run. " +
+  "Everything we just claimed is measured. Our evaluation harness runs fifty-seven scenarios — twenty-two legitimate tasks and thirty-five attacks — each on a fresh blockchain snapshot. All fifty-seven pass: one hundred percent task completion, one hundred percent attack prevention, and zero tokens to any attacker wallet. " +
+  "Fifteen of them came from a red-team round against our own agent: it found a fake invoice that was paid and a real invoice that was wrongly blocked, and we fixed both. " +
+  "Underneath that sit eighteen smart-contract tests including fuzzing and invariants, and eighty-four Python tests, including the LLM path and an end-to-end on-chain run. " +
   "Judges can reproduce everything with three commands and no API key, and our public-testnet run provides real transaction hashes, including a reverted stolen-key transaction."
 );
 
@@ -342,22 +343,60 @@ flow.forEach(([h, d, col], i) => {
   if (i < 3) s.addShape(pres.ShapeType.downArrow, { x: 10.4, y: y + 0.97, w: 0.3, h: 0.23, fill: { color: "94A3B8" }, line: { color: "94A3B8" } });
 });
 s.addNotes(
-  "For a bank, controls matter as much as features. Kendali implements the controls a treasury department would expect: four-eyes approval, segregation of duties, beneficiary verification against business email compromise, cooling-off for new beneficiaries, sanctions screening, limits with time-locked changes, and a kill switch. " +
+  "For a bank, controls matter as much as features. Kendali implements the controls a treasury department would expect, from four-eyes approval and beneficiary verification to sanctions screening, time-locked limits and a kill switch. " +
   "On the right is what makes the AI auditable: every decision record is hashed before signing, the hash travels inside the transaction, and anyone can later recompute it and check it against the chain. That turns the AI's reasoning into verifiable evidence."
 );
 
-// ================================================================== 11 CRITERIA
+// ================================================================== 11 REGULATORY PATH
+s = pres.addSlide({ masterName: "KD_CONTENT", sectionTitle: "Evidence" });
+s.addText("Regulatory path: Indonesia & China", { placeholder: "title" });
+card(s, 0.6, 1.85, 5.7, 1.35, HEX.lt2, "sandbox");
+text(s, [
+  { text: "Today: a sandbox, not a payment product", options: { bold: true, color: HEX.accent2, breakLine: true } },
+  { text: "tUSDC on the Sepolia testnet is a valueless test token, used only to prove the controls.", options: { color: "334155" } },
+], { x: 0.85, y: 2.0, w: 5.25, h: 1.1, fontSize: 15 });
+const rules = [
+  ["ID", HEX.accent3, "Indonesia", "Domestic transactions must be settled in Rupiah (UU 7/2011 on Currency); Bank Indonesia does not allow crypto-assets as a means of payment."],
+  ["CN", HEX.accent3, "Mainland China", "Public stablecoins and other virtual currencies are not legal tender and may not be used for payments."],
+];
+rules.forEach(([b, col, h, d], i) => {
+  const y = 3.45 + i * 1.65;
+  card(s, 0.6, y, 5.7, 1.45, "FFFFFF", `rule${b}`);
+  badge(s, 0.85, y + 0.42, 0.6, col, b, 15);
+  text(s, h, { x: 1.7, y: y + 0.15, w: 4.4, h: 0.4, fontSize: 17, bold: true, color: HEX.dk1 });
+  text(s, d, { x: 1.7, y: y + 0.55, w: 4.4, h: 0.85, fontSize: 13, color: "334155" });
+});
+const railPath = [
+  ["Production rail", "tokenized bank deposits · licensed stablecoins · e-CNY-style rails", HEX.accent4],
+  ["Permissioned EVM chain", "e.g. FISCO BCOS: WeBank's open-source, Solidity-compatible chain", HEX.accent1],
+  ["Same contracts", "plain Solidity + OpenZeppelin, no Ethereum-only features: recompile, redeploy", HEX.accent2],
+  ["Same agent", "chain-agnostic: it needs an RPC endpoint and an ABI, nothing else", HEX.dk1],
+];
+railPath.forEach(([h, d, col], i) => {
+  const y = 1.85 + i * 1.22;
+  s.addShape(pres.ShapeType.roundRect, { x: 6.9, y, w: 5.8, h: 0.95, rectRadius: 0.1, fill: { color: col }, line: { color: col } });
+  text(s, [{ text: h, options: { bold: true, fontSize: 15, color: "FFFFFF", breakLine: true } }, { text: d, options: { fontSize: 12, color: "E2E8F0" } }],
+    { x: 7.1, y: y + 0.1, w: 5.4, h: 0.78, valign: "middle" });
+  if (i < 3) s.addShape(pres.ShapeType.downArrow, { x: 9.65, y: y + 0.97, w: 0.3, h: 0.23, fill: { color: "94A3B8" }, line: { color: "94A3B8" } });
+});
+s.addNotes(
+  "A question we expect: is this legal? Today it is a sandbox: tUSDC on Sepolia is a valueless test token that proves the controls. " +
+  "In Indonesia, domestic transactions must be settled in Rupiah under the Currency Law, and Bank Indonesia does not allow crypto-assets as a means of payment. In mainland China, public stablecoins are not legal tender for payments. " +
+  "So the production rail is tokenized bank deposits, licensed stablecoins or e-CNY-style rails on a permissioned EVM chain such as WeBank's FISCO BCOS. Our contracts are plain Solidity, so they port with a recompile, and the agent only needs an RPC endpoint and an ABI."
+);
+
+// ================================================================== 12 CRITERIA
 s = pres.addSlide({ masterName: "KD_CONTENT", sectionTitle: "Evidence" });
 s.addText("Mapped to the judging criteria", { placeholder: "title" });
 const crit = [
   ["Task completion · 40%", HEX.accent1, [
-    "19/19 legitimate tasks completed end-to-end with real transactions",
+    "22/22 legitimate tasks completed end-to-end with real transactions",
     "Invoices in EN/ID, text and PDF; maker-checker; recurring; treasury; chat",
     "Public-testnet execution log with transaction hashes",
   ]],
   ["Security & compliance · 30%", HEX.accent3, [
     "Three independent layers; four permission tiers enforced on-chain",
-    "23/23 attacks stopped, including a stolen agent key",
+    "35/35 attacks stopped, including a stolen agent key",
     "Fuzz-proven invariants; honest risk register in the self-assessment",
   ]],
   ["Innovation & interaction · 30%", HEX.accent4, [
@@ -380,17 +419,17 @@ text(s, [
   { text: "custom policy vault + ERC-4626 treasury + on-chain decision anchoring + a stolen-key transaction reverted on a public testnet", options: { color: HEX.dk1 } },
 ], { x: 0.9, y: 5.85, w: 11.5, h: 0.8, fontSize: 15, valign: "middle" });
 s.addNotes(
-  "To make your evaluation easy, here is how Kendali maps to the three criteria. Task completion: nineteen real tasks done end-to-end with on-chain transactions. Security and compliance: three independent layers, four permission tiers enforced on-chain, twenty-three attacks stopped and invariants proven by fuzzing — plus an honest list of residual risks. " +
+  "To make your evaluation easy, here is how Kendali maps to the three criteria. Task completion: twenty-two real tasks done end-to-end with on-chain transactions. Security and compliance: three independent layers, four permission tiers enforced on-chain, thirty-five attacks stopped and invariants proven by fuzzing — plus an honest list of residual risks. " +
   "Innovation and interaction: on-chain decision anchoring makes the AI verifiable, the bilingual chat fits Indonesian small businesses, and it runs on any OpenAI-compatible model. For the on-chain challenge we built a custom policy vault and a reserve, not just a wallet call."
 );
 
-// ================================================================== 12 CLOSING
+// ================================================================== 13 CLOSING
 pres.addSection({ title: "Closing" });
 s = pres.addSlide({ masterName: "KD_CLOSING", sectionTitle: "Closing" });
 s.addText("Autonomy you can verify", { placeholder: "title" });
 const next = [
   ["Production path", "multisig owner + session keys · live sanctions feeds · OCR and e-invoices"],
-  ["Settlement", "tokenized deposits or licensed stablecoins on permissioned EVM chains (e.g. FISCO BCOS)"],
+  ["Settlement", "regulated rails: tokenized deposits, licensed stablecoins, e-CNY-style rails"],
   ["Pilot", "cross-border SMEs in Indonesia, Singapore and Shenzhen"],
 ];
 next.forEach(([h, d], i) => {
@@ -403,7 +442,7 @@ text(s, `Thank you — Team ${TEAM} · Institut Teknologi Bandung`, { x: 0.8, y:
 text(s, `Code, evaluation and evidence: ${REPO}`, { x: 0.8, y: 6.5, w: 8, h: 0.4, fontSize: 14, color: "94A3B8" });
 s.addNotes(
   "To close: Kendali shows that an AI agent can be a real financial participant — paying, approving, saving — while every dangerous power stays behind rules it cannot argue with, and every decision stays verifiable. " +
-  "Our path to production is a multisig owner with session keys, live sanctions feeds and settlement in regulated instruments such as tokenized deposits on permissioned EVM chains like FISCO BCOS, piloting with cross-border small businesses between Indonesia, Singapore and Shenzhen. " +
+  "Our path to production is a multisig owner with session keys, live sanctions feeds and settlement on the regulated rails we just showed, piloting with cross-border small businesses between Indonesia, Singapore and Shenzhen. " +
   "Autonomy you can verify. Thank you — we are happy to take your questions."
 );
 

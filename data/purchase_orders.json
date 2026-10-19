@@ -1,0 +1,105 @@
+{
+  "note": "SYNTHETIC open purchase orders / expected bills for the demo business. Production: synced from the ERP / accounting system (PO + goods receipt = three-way match).",
+  "tolerance_pct": "2",
+  "purchase_orders": [
+    {
+      "id": "PO-2026-0405",
+      "vendor_id": "V001",
+      "description": "Green beans Arabica Gayo grade 1, 300 kg (September harvest)",
+      "amount": "2850.00",
+      "issued_on": "2026-09-20",
+      "invoices_allowed": 1,
+      "status": "open"
+    },
+    {
+      "id": "PO-2026-0409",
+      "vendor_id": "V001",
+      "description": "Green beans Arabica Gayo grade 2, 200 kg",
+      "amount": "1800.00",
+      "issued_on": "2026-09-25",
+      "invoices_allowed": 1,
+      "status": "open"
+    },
+    {
+      "id": "PO-2026-0430",
+      "vendor_id": "V001",
+      "description": "Green beans Gayo micro-lot, 125 kg",
+      "amount": "1250.00",
+      "issued_on": "2026-10-01",
+      "invoices_allowed": 1,
+      "status": "open"
+    },
+    {
+      "id": "PO-2026-0412",
+      "vendor_id": "V002",
+      "description": "Kraft bags 250g + degassing valves, 2,000 sets",
+      "amount": "540.00",
+      "issued_on": "2026-09-28",
+      "invoices_allowed": 1,
+      "status": "open"
+    },
+    {
+      "id": "PO-2026-0418",
+      "vendor_id": "V002",
+      "description": "Printed labels, 5,000 pcs",
+      "amount": "600.00",
+      "issued_on": "2026-09-30",
+      "invoices_allowed": 1,
+      "status": "open"
+    },
+    {
+      "id": "PO-2026-0421",
+      "vendor_id": "V002",
+      "description": "Kraft bags reorder, 4,000 pcs",
+      "amount": "840.00",
+      "issued_on": "2026-10-02",
+      "invoices_allowed": 1,
+      "status": "open"
+    },
+    {
+      "id": "PO-2026-0425",
+      "vendor_id": "V002",
+      "description": "Gift sleeves, blanket order: 3 call-offs of 1,000 pcs",
+      "amount": "950.00",
+      "invoices_allowed": 3,
+      "issued_on": "2026-10-03",
+      "status": "open"
+    },
+    {
+      "id": "PO-2026-0410",
+      "vendor_id": "V003",
+      "description": "Sea freight JKT-SIN LCL 2 cbm + customs documentation",
+      "amount": "410.00",
+      "issued_on": "2026-09-29",
+      "invoices_allowed": 1,
+      "status": "open"
+    },
+    {
+      "id": "PO-2026-0433",
+      "vendor_id": "V003",
+      "description": "Sea freight to Singapore, single shipment",
+      "amount": "300.00",
+      "issued_on": "2026-10-05",
+      "invoices_allowed": 1,
+      "status": "open"
+    },
+    {
+      "id": "PO-2026-0434",
+      "vendor_id": "V003",
+      "description": "Air freight booking for urgent sample shipment",
+      "amount": "350.00",
+      "issued_on": "2026-10-07",
+      "invoices_allowed": 1,
+      "status": "open"
+    },
+    {
+      "id": "PO-2026-0415",
+      "vendor_id": "V006",
+      "description": "Drum bearing replacement kit x2",
+      "amount": "380.00",
+      "issued_on": "2026-10-01",
+      "invoices_allowed": 1,
+      "status": "open"
+    }
+  ]
+}

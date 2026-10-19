@@ -17,7 +17,8 @@ ID_HINTS = (
 )
 
 FORBIDDEN = [
-    (r"\b(approve|setujui|acc)\b.{0,40}\b(proposal|usulan|pending|#?\d+)", "AGENT_CANNOT_APPROVE"),
+    (r"\b(approve|setujui|acc|sign\s*off)\b.{0,40}\b(proposals?|usulan|pending|everything|all|semua(nya)?|nunggu|"
+     r"menunggu|tertunda|#?\d+)\b", "AGENT_CANNOT_APPROVE"),
     (r"\b(raise|increase|change|set|update|naikkan|ubah|ganti)\b.{0,30}\b(limit|cap|batas|plafon)", "AGENT_CANNOT_CHANGE_POLICY"),
     (r"\b(add|register|whitelist|allowlist|tambah(kan)?|daftarkan)\b.{0,30}\b(payee|vendor|supplier|penerima|wallet)", "AGENT_CANNOT_CHANGE_POLICY"),
     (r"\b(unpause|resume|lanjutkan pembayaran|aktifkan lagi)\b", "AGENT_CANNOT_CHANGE_POLICY"),

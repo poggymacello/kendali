@@ -65,10 +65,25 @@ class Invoice(BaseModel):
     currency: str | None = None
     total: Decimal | None = None
     pay_to: str | None = None
+    po_ref: str | None = None  # purchase-order reference printed on the invoice, if any
+    total_currency: str | None = None  # currency token found on the total line (e.g. "tUSDC", "Rp")
     notes: str = ""
     line_items: list[LineItem] = Field(default_factory=list)
     raw_text: str = ""
     extractor: str = "deterministic"
+    warnings: list[str] = Field(default_factory=list)  # extraction assumptions / unreadable fields
+
+
+class PurchaseOrder(BaseModel):
+    """An open purchase order / expected bill: the business's own record that something was ordered."""
+
+    id: str
+    vendor_id: str
+    description: str
+    amount: Decimal
+    invoices_allowed: int = 1  # call-offs a blanket order may be invoiced in
+    issued_on: date | None = None
+    status: str = "open"  # open | closed
 
 
 class Obligation(BaseModel):
@@ -87,6 +102,7 @@ class Decision(BaseModel):
     payee: str | None = None
     amount: Decimal | None = None
     ref: str | None = None  # hex bytes32 payment reference
+    po_id: str | None = None  # purchase order this payment is matched to (three-way-match stand-in)
     findings: list[Finding] = Field(default_factory=list)
     risk_score: int = 0
     plan: list[str] = Field(default_factory=list)

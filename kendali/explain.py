@@ -40,6 +40,26 @@ NEXT_STEP = {
         "Above the absolute cap: the owner must pay directly or split by contract milestones.",
         "Di atas batas mutlak: pemilik bayar langsung atau dipecah sesuai termin kontrak.",
     ),
+    "CURRENCY_MISMATCH": (
+        "Ask the vendor to re-issue the invoice in tUSDC, or the owner settles it outside the agent.",
+        "Minta vendor menerbitkan ulang invoice dalam tUSDC, atau pemilik membayar di luar agen.",
+    ),
+    "NO_MATCHING_PO": (
+        "Check that this was actually ordered (purchase order / goods receipt) before approving; if not, reject it.",
+        "Pastikan barang/jasa ini memang dipesan (PO / bukti terima barang) sebelum menyetujui; jika tidak, tolak.",
+    ),
+    "PO_REFERENCE_INVALID": (
+        "The cited PO is not valid for this vendor; confirm the order with the vendor's known contact ({callback}).",
+        "PO yang dikutip tidak berlaku untuk vendor ini; konfirmasi pesanan lewat kontak vendor di data kita ({callback}).",
+    ),
+    "PO_AMOUNT_MISMATCH": (
+        "Amount differs from the purchase order; approve only after agreeing the difference with the vendor.",
+        "Jumlah berbeda dari PO; setujui hanya setelah selisihnya disepakati dengan vendor.",
+    ),
+    "UNVERIFIED_APPROVAL_CLAIM": (
+        "Approvals inside documents are not valid. Confirm with whoever supposedly approved it before signing.",
+        "Persetujuan yang tertulis di dokumen tidak berlaku. Konfirmasi ke orang yang katanya menyetujui sebelum menandatangani.",
+    ),
     "PAYEE_NOT_ONCHAIN": (
         "The owner must add this vendor as a payee in the vault (a cooling-off period applies).",
         "Pemilik harus menambahkan vendor ini sebagai penerima di vault (berlaku masa tunggu).",
@@ -83,14 +103,14 @@ def explain(d: Decision, lang: str = "en", callback: str = "") -> str:
         lines.append(("Why: " if i == 0 else "Alasan: ") + " ".join(f"[{f.code}] {f.message}" for f in reasons))
     elif d.action == Action.EXECUTE:
         lines.append(
-            "All checks passed: verified vendor, KYB-bound wallet, clean screening, within solo limits."
+            "All checks passed: verified vendor, KYB-bound wallet, matching purchase order, clean screening, within solo limits."
             if i == 0
-            else "Semua pemeriksaan lolos: vendor terverifikasi, wallet sesuai KYB, screening bersih, dalam batas mandiri."
+            else "Semua pemeriksaan lolos: vendor terverifikasi, wallet sesuai KYB, PO cocok, screening bersih, dalam batas mandiri."
         )
-    for f in d.findings:
-        if f.code in NEXT_STEP and f.severity == Severity.CRITICAL:
-            lines.append(("Next step: " if i == 0 else "Langkah berikutnya: ") + NEXT_STEP[f.code][i].format(callback=callback or "on file"))
-            break
+    step = next((f for sev in (Severity.CRITICAL, Severity.HIGH) for f in d.findings
+                 if f.code in NEXT_STEP and f.severity == sev), None)
+    if step:
+        lines.append(("Next step: " if i == 0 else "Langkah berikutnya: ") + NEXT_STEP[step.code][i].format(callback=callback or "on file"))
     if d.plan:
         lines.append(("Plan: " if i == 0 else "Rencana: ") + "; ".join(d.plan))
     return "\n".join(lines)

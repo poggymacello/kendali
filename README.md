@@ -13,7 +13,7 @@ It does all of this without being trickable: business-email-compromise, prompt i
 | Topic | **F — Agent Wallet** (autonomous on-chain wallet) |
 | Team | **Kendali** · Institut Teknologi Bandung, Indonesia |
 | Project | Kendali — a policy-bounded AI treasury agent |
-| Repository | `https://github.com/<github-user>/kendali` <!-- SET-REPO-URL: replace with the real URL, or run scripts/finalize_submission.py --> |
+| Repository | `https://github.com/poggymacello/kendali` |
 | One line | An AI agent that pays suppliers on-chain and runs a small business treasury, and cannot be tricked into losing the money it controls. |
 
 ![Architecture](docs/img/architecture.png)
@@ -22,10 +22,10 @@ It does all of this without being trickable: business-email-compromise, prompt i
 
 | | |
 |---|---|
-| Scenario evaluation (19 tasks + 23 attacks, each on a fresh EVM snapshot) | **42 / 42 pass** · task completion **100%** · attack prevention **100%** |
+| Scenario evaluation (22 tasks + 35 attacks, each on a fresh EVM snapshot; 15 added by a red-team round) | **57 / 57 pass** · task completion **100%** · attack prevention **100%** |
 | Attacker / decoy wallets funded in any scenario | **never** |
 | Smart-contract tests (unit + fuzz + stateful invariants, 8,192 random calls/run) | **18 / 18 pass** |
-| Python tests (security, extraction EN/ID/PDF, NLU, policy, audit, LLM path, on-chain e2e) | **55 / 55 pass** |
+| Python tests (security, extraction EN/ID/PDF, NLU, policy incl. PO matching, audit, LLM path, on-chain e2e) | **84 / 84 pass** |
 | Worst case with a stolen agent key | pay only allow-listed vendors, ≤ 1,000 per payment, ≤ 2,500 per day |
 
 Reports: [`reports/EVAL_REPORT.md`](reports/EVAL_REPORT.md) · [`docs/TECHNICAL_DOCUMENTATION.md`](docs/TECHNICAL_DOCUMENTATION.md) · [`docs/SECURITY_SELF_ASSESSMENT.md`](docs/SECURITY_SELF_ASSESSMENT.md) · [`docs/EXECUTION_EVIDENCE.md`](docs/EXECUTION_EVIDENCE.md)
@@ -35,16 +35,16 @@ Reports: [`reports/EVAL_REPORT.md`](reports/EVAL_REPORT.md) · [`docs/TECHNICAL_
 **Requirements:** Python 3.10+ (tested with 3.11.9 and 3.12.8), [Foundry](https://getfoundry.sh) 1.x (for `anvil` and `forge`; tested with 1.8.5), Git. Tested on Windows 11; Linux/macOS use the same commands. No API key and no real funds are needed.
 
 ```bash
-git clone https://github.com/<github-user>/kendali.git kendali && cd kendali
+git clone https://github.com/poggymacello/kendali.git kendali && cd kendali
 python -m venv .venv
 # Windows: .venv\Scripts\activate     macOS/Linux: source .venv/bin/activate
 pip install -e ".[dev,docs]"
 
-# 1) reproducible evaluation: starts its own devnet, runs 42 scenarios, writes reports/
-#    (expected: 42/42 pass, task completion 100%, attack prevention 100%)
+# 1) reproducible evaluation: starts its own devnet, runs 57 scenarios, writes reports/
+#    (expected: 57/57 pass, task completion 100%, attack prevention 100%)
 python eval/run_eval.py
 
-# 2) tests (expected: 55 passed / 18 passed)
+# 2) tests (expected: 84 passed / 18 passed)
 pytest
 cd contracts && forge test && cd ..
 
@@ -53,7 +53,7 @@ python -m kendali devnet            # terminal 1: local chain + deploy + seed (k
 streamlit run app/streamlit_app.py  # terminal 2: open http://localhost:8501
 ```
 
-If `anvil` is not on your PATH, set `KENDALI_ANVIL=/path/to/anvil`.
+If `anvil` is not on your PATH, set `KENDALI_ANVIL=/path/to/anvil`. Everything the quick start needs is in the repository (compiled contract artifacts in `contracts/artifacts/`, Solidity libraries in `contracts/lib/`, synthetic data in `data/`); no `.env` file is needed.
 
 ### CLI
 ```bash
@@ -92,7 +92,7 @@ Keys are written to `.env`, which is git-ignored. Never reuse them on mainnet. W
 | Layer | Role | Key properties |
 |---|---|---|
 | ① Understand | LLM + deterministic extractor/NLU | closed intent set, schema-validated JSON, untrusted documents spotlighted, model never sees keys or chooses payees |
-| ② Decide | deterministic policy engine | KYB payee binding, screening, BEC / injection / homoglyph / poisoning / duplicate / anomaly detectors, limits, liquidity, due dates, routing table, **pre-sign simulation** |
+| ② Decide | deterministic policy engine | KYB payee binding, **open purchase-order matching**, screening, BEC / injection / approval-claim / homoglyph / poisoning / duplicate / anomaly detectors, limits, liquidity, due dates, routing table, **pre-sign simulation** |
 | ③ Enforce | `KendaliVault.sol` | allow-list + cooling-off, 1,000 per tx / 2,500 per day, maker-checker up to 10,000, time-locked loosening of policy, circuit breaker, decision hashes anchored in events |
 
 **Permission tiers:**
@@ -101,16 +101,18 @@ Keys are written to `.env`, which is git-ignored. Never reuse them on mainnet. W
 * **T2** maker-checker (the agent proposes, the owner approves)
 * **T3** owner-only governance, with time-locked loosening
 
-Details: [security self-assessment](docs/SECURITY_SELF_ASSESSMENT.md).
+Details: [security self-assessment](docs/SECURITY_SELF_ASSESSMENT.md), including the known limits of pattern-based injection detection and the 19 Oct 2026 red-team round.
+
+**Regulatory note.** tUSDC on Sepolia is a sandbox. Public stablecoins are not legal tender for payments in mainland China, and domestic transactions in Indonesia must use Rupiah (Law 7/2011; Bank Indonesia rules). The production path is tokenized bank deposits, licensed stablecoins or e-CNY-style rails on a permissioned EVM chain such as FISCO BCOS; the contracts are plain Solidity and the agent is chain-agnostic.
 
 ## Repository
 ```
 contracts/  KendaliVault, ReserveVault (ERC-4626), MockUSDC + Foundry tests; artifacts/ = ABI+bytecode
 kendali/    agent package: chain, invoices, llm, nlu, policy, security, registry, treasury, audit, agent, cli
-eval/       scenarios.yaml (42 scenarios) + run_eval.py (automated grader)
-tests/      pytest suite (55 tests)
+eval/       scenarios.yaml (57 scenarios) + run_eval.py (automated grader)
+tests/      pytest suite (84 tests)
 app/        Streamlit console (chat, invoices, owner approvals, treasury, audit, guardrails red-team)
-data/       synthetic vendor master, screening list, invoice inbox (13 invoices incl. PDF and attacks)
+data/       synthetic vendor master, open purchase orders, screening list, invoice inbox (13 invoices incl. PDF and attacks)
 docs/       technical documentation, security self-assessment, execution evidence, diagrams
 submission/ pitch deck, demo-video script, registration email draft, submission checklist
 reports/    evaluation and testnet evidence
@@ -122,7 +124,7 @@ scripts/    data generator, diagram renderer, artifact export, testnet keys + ev
 | Required item | Where |
 |---|---|
 | 1. Technical documentation (architecture, core algorithms, security design) | [`docs/TECHNICAL_DOCUMENTATION.md`](docs/TECHNICAL_DOCUMENTATION.md) |
-| 2. Presentation deck (≤ 10 min) | [`submission/Kendali_FinTechathon2026_Deck.pptx`](submission/Kendali_FinTechathon2026_Deck.pptx) (12 slides, speaker notes ≈ 8–9.5 min) |
+| 2. Presentation deck (≤ 10 min) | [`submission/Kendali_FinTechathon2026_Deck.pptx`](submission/Kendali_FinTechathon2026_Deck.pptx) (13 slides, speaker notes ≈ 9–9.5 min) |
 | 3. Demo video (≤ 5 min) | script: [`submission/DEMO_VIDEO_SCRIPT.md`](submission/DEMO_VIDEO_SCRIPT.md) |
 | 4. Source code, README, deployment instructions, test cases | this repository · [Quick start](#quick-start-5-minutes) · `tests/`, `contracts/test/`, `eval/scenarios.yaml` |
 | 5. Security self-assessment (permission tiers, known risks) | [`docs/SECURITY_SELF_ASSESSMENT.md`](docs/SECURITY_SELF_ASSESSMENT.md) |
@@ -131,4 +133,8 @@ scripts/    data generator, diagram renderer, artifact export, testnet keys + ev
 ## Disclaimer
 All companies, people, wallets and the screening list are **synthetic**. `tUSDC` is a valueless test token. The contracts are unaudited; do not use them with real funds.
 
-License: MIT.
+## Team
+
+See [`CONTRIBUTORS.md`](CONTRIBUTORS.md). Institut Teknologi Bandung, Indonesia.
+
+License: MIT ([`LICENSE`](LICENSE)).

@@ -199,6 +199,11 @@ def run_step(ctx: Ctx, agent: KendaliAgent, step: dict, state: dict) -> tuple[bo
         missing = [code for code in exp["codes"] if code not in have]
         if missing:
             fails.append(f"missing finding codes {missing}; have {sorted(have)}")
+    if "codes_absent" in exp and results:
+        have = set(results[0].decision.codes())
+        unwanted = [code for code in exp["codes_absent"] if code in have]
+        if unwanted:
+            fails.append(f"unexpected finding codes {unwanted}; have {sorted(have)}")
     if "onchain" in exp:
         oc = results[0].onchain if results else ""
         if not oc.startswith(exp["onchain"]):
