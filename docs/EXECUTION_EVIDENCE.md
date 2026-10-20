@@ -35,21 +35,22 @@ This document lists every piece of execution evidence we have, says honestly wha
 
 **How a judge verifies a hash:** open the link in `reports/TESTNET_EVIDENCE.md` (Sepolia Etherscan) → check *From* (agent or owner address, listed in `deployments/sepolia-11155111.json`), *To* (the vault), *Status*, and the *Logs* tab for the event. The `decisionHash` in each event is the keccak256 of the agent's decision record; step 14 recomputes every record in the run's local hash-chained audit log (`runs/sepolia-…/audit.jsonl`, synthetic data only, available on request) and matches it against these events.
 
-## 2. Status of the public run and how to complete it
+## 2. Public run: status and how to reproduce
 
-* Network: Ethereum Sepolia, RPC `https://ethereum-sepolia-rpc.publicnode.com`, explorer `https://sepolia.etherscan.io/tx/`.
-* Fresh keys were generated with `scripts/new_testnet_keys.py` and stored in the git-ignored `.env`. The private keys are never printed, logged or committed.
-* **Deployer address to fund: `0x1bD652D9EaF19f2a1869932A374528D3332103f8`** (owner `0x71Fbf13D39DAbA40Fb556461d46aA7B9b3BC650F`, agent `0x208699d2Ab3b0bc821c374186dEfcc97305fc9e2` are topped up automatically by the deployer).
-* Budget: **0.05 Sepolia ETH is enough** (measured in the rehearsal, §3); 0.1 ETH leaves a comfortable margin.
+* **Status: completed on 20 Oct 2026** on Ethereum Sepolia (blocks 11951752–11951790): 14/14 steps, the stolen-key payment reverted on-chain, audit 8/8 anchored.
+* Network: Ethereum Sepolia, RPC `https://ethereum-sepolia-rpc.publicnode.com`, explorer `https://sepolia.etherscan.io`.
+* Accounts (public addresses): deployer `0x1bD652D9EaF19f2a1869932A374528D3332103f8`, owner `0x71Fbf13D39DAbA40Fb556461d46aA7B9b3BC650F`, agent `0x208699d2Ab3b0bc821c374186dEfcc97305fc9e2`. Keys were generated with `scripts/new_testnet_keys.py`, kept in a git-ignored file and never printed, logged or committed.
+* Cost: the run used less than 0.05 Sepolia ETH (one faucet drip).
+
+To reproduce on your own Sepolia account:
 
 ```bash
-# after the deployer address holds Sepolia ETH:
+python scripts/new_testnet_keys.py --rpc https://ethereum-sepolia-rpc.publicnode.com --network sepolia
+# fund the printed deployer address with ~0.05 Sepolia ETH, then:
 python scripts/testnet_evidence.py        # about 6 minutes (includes the 180 s cooling-off)
-git add reports/TESTNET_EVIDENCE.md reports/testnet-evidence.json deployments/sepolia-11155111.json
-git commit -m "Add public Sepolia execution evidence"
 ```
 
-### Public Sepolia hashes (filled after the run)
+### Public Sepolia hashes (run of 20 Oct 2026)
 
 <!-- Filled from the public Sepolia run of 2026-10-20 -->
 | Item | Value |

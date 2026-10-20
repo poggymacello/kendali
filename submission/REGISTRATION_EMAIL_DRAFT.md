@@ -8,7 +8,13 @@ Fill everything in `[brackets]` yourself. Do not send anything you have not chec
 
 ---
 
-## Email 1: registration (send today, 19 Oct)
+## Email 1: registration ✅ sent 19 Oct 2026
+
+Kept below for reference only.
+
+<details><summary>Email 1 text</summary>
+
+
 
 **To:** fintechathon@ican-x.com
 **Subject:** International Track Registration – Kendali – [Team Leader Full Name]
@@ -40,40 +46,68 @@ Fill everything in `[brackets]` yourself. Do not send anything you have not chec
 > Institut Teknologi Bandung, Indonesia
 > [Phone / WhatsApp]
 
+</details>
+
 ---
 
-## Email 2: full submission (send on 20 Oct, aim for 18:00 WIB at the latest)
+## Email 2: full submission (send Tue 20 Oct, by 18:00 WIB; hard deadline 22:59 WIB = 23:59 Beijing)
 
-The rules say the latest version received before the deadline counts, so it is safe to send early and update later. Reply in the **same thread** as Email 1 so they can match the team.
+**How to send:** open the thread of Email 1 in Gmail → **Reply** (keeps the same subject thread so they can match the team) → change the subject to the one below. The rules say the latest version received before the deadline counts, so sending early is safe.
 
 **To:** fintechathon@ican-x.com
-**Subject:** International Track Submission – Kendali – Topic F – [Team Leader Full Name]
+**Subject:** `International Track Submission – Kendali – Topic F – Poggy Macello Gultom`
 
-**Attachments** (keep the email under ~20 MB; share bigger files as links):
-1. `Kendali_TechnicalDocumentation.pdf` (export of `docs/TECHNICAL_DOCUMENTATION.md`)
-2. `Kendali_FinTechathon2026_Deck.pptx` (+ a PDF export of it)
-3. `Kendali_SecuritySelfAssessment.pdf` (export of `docs/SECURITY_SELF_ASSESSMENT.md`)
-4. `Kendali_ExecutionEvidence.pdf` (export of `docs/EXECUTION_EVIDENCE.md` + `reports/TESTNET_EVIDENCE.md`)
-5. Demo video as a link (file name `InternationalAI-Kendali-DemoVideo.mp4`, the format the official video guide suggests)
+**Attach these 4 PDFs** (all in `submission/pdf/`, ≈2 MB in total, well under Gmail's 25 MB):
+| # | File | Rule item it answers |
+|---|---|---|
+| 1 | `Kendali_TechnicalDocumentation.pdf` (KND-TD-001) | (1) technical documentation: architecture, core algorithms, security design |
+| 2 | `Kendali_FinTechathon2026_Deck.pdf` (13 slides, ≈9.5 min) | (2) presentation deck ≤10 min |
+| 3 | `Kendali_SecuritySelfAssessment.pdf` (KND-SSA-001) | (5) security self-assessment: permission tiers + known risks |
+| 4 | `Kendali_ExecutionEvidence.pdf` (KND-EE-001) | (6) execution evidence: real Sepolia transaction hashes + 57-scenario evaluation |
 
-**Body:**
+Optional 5th attachment: `Kendali_FinTechathon2026_Deck.pptx` (editable original). **Links in the body:** (3) demo video, (4) source code.
+
+**Body (fill the two `[ ]` items, nothing else):**
 
 > Dear Organising Committee,
 >
-> Team Kendali (Institut Teknologi Bandung, Indonesia, Topic F: Agent Wallet) submits its entry for the International Track.
+> Team Kendali (Institut Teknologi Bandung, Indonesia) submits its entry for the International Track, Topic F: Agent Wallet. Team: Poggy Macello Gultom (team leader) and Mohammad Ari Alexander Aziz.
 >
-> - Source code (README, deployment instructions, test cases): [https://github.com/poggymacello/kendali]
-> - Demo video (under 5 minutes): [video link]
-> - Attached: technical documentation, presentation deck, security self-assessment, execution evidence
-> - On-chain evidence: our agent's transactions on the Sepolia testnet, with explorer links, are listed in reports/TESTNET_EVIDENCE.md in the repository. Vault contract: [0x... vault address from the report]
+> **Entry:** Kendali: A Policy-Bounded AI Treasury Agent for Small Businesses. The LLM proposes, a deterministic policy engine decides, and a smart-contract vault enforces the limits, so even a stolen agent key cannot move funds to an attacker.
 >
-> Everything can be reproduced from a clean machine with three commands (python eval/run_eval.py, pytest, forge test). No API key or real funds are needed.
+> **Required materials:**
+> 1. Technical documentation: attached (Kendali_TechnicalDocumentation.pdf)
+> 2. Presentation deck (under 10 minutes): attached (Kendali_FinTechathon2026_Deck.pdf)
+> 3. Demo video (under 5 minutes): [video link, set to "anyone with the link can view"]
+> 4. Source code with README, deployment guide and test cases: https://github.com/poggymacello/kendali
+> 5. Security self-assessment: attached (Kendali_SecuritySelfAssessment.pdf)
+> 6. Execution evidence: attached (Kendali_ExecutionEvidence.pdf)
 >
-> Please let us know if you need anything else.
+> **On-chain execution evidence (Ethereum Sepolia, public testnet, 20 October 2026):**
+> - Vault contract: https://sepolia.etherscan.io/address/0x7240Dd6E8C95BcE6A1CE53BCD44781585bC067D7
+> - Autonomous agent payment of a verified invoice: https://sepolia.etherscan.io/tx/0x3f1fd6babd6a62ec556099683e3675d8517137d088637ca87e90982f675e4a4a
+> - Owner approval of a large payment (maker-checker): https://sepolia.etherscan.io/tx/0xb4f7e6391fe91fdfab9049088d8275901837698c36449528354daed07968e66c
+> - Payment attempted with a stolen agent key, reverted by the contract: https://sepolia.etherscan.io/tx/0x433d65fd8eaa577b8af68b094801f4866ccc1b88ca87b67ea258c04b3c3eb3dd
+> - All 14 steps with every transaction hash: https://github.com/poggymacello/kendali/blob/main/reports/TESTNET_EVIDENCE.md
+>
+> **Results, reproducible from a clean clone:** 57 of 57 evaluation scenarios pass (22 tasks, 35 attacks), task completion 100%, attack prevention 100%, attacker wallets never funded; 84 Python tests and 18 smart-contract tests pass. Three commands reproduce everything: `python eval/run_eval.py`, `pytest`, `forge test`. No API key or real funds are needed.
+>
+> All companies, people and wallets in the demo are synthetic, and tUSDC is a valueless test token.
+>
+> Could you please confirm that you have received our submission?
 >
 > Best regards,
-> [Team Leader Full Name]
+> Poggy Macello Gultom
 > Team Leader, Kendali
+> Institut Teknologi Bandung, Indonesia
+> +62 853-6104-8752
+
+**Before you press Send:**
+- [ ] Video link opens in an incognito window (no login needed) and is under 5:00.
+- [ ] https://github.com/poggymacello/kendali opens in an incognito window (public).
+- [ ] The 4 PDFs are attached and open.
+- [ ] Sent from gultompoggy@gmail.com, as a reply in the Email 1 thread.
+- [ ] After sending: if there's no confirmation within 24 h, reply once asking them to confirm receipt.
 
 ---
 
