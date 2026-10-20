@@ -7,7 +7,7 @@ This document lists every piece of execution evidence we have, says honestly wha
 
 | # | Evidence | Chain | Status | File |
 |---|---|---|---|---|
-| E1 | **Public testnet run**: the agent deploys its vault, pays, proposes, gets owner approval, blocks attacks, parks cash in the reserve, and a stolen-key payment **reverts on-chain** | **Ethereum Sepolia** (chain id 11155111), public | **PENDING**: waits for the deployer address to be funded with Sepolia ETH (see §2) | `reports/TESTNET_EVIDENCE.md`, `reports/testnet-evidence.json` |
+| E1 | **Public testnet run**: the agent deploys its vault, pays, proposes, gets owner approval, blocks attacks, parks cash in the reserve, and a stolen-key payment **reverts on-chain** | **Ethereum Sepolia** (chain id 11155111), public | **Done (2026-10-20)**: 14/14 steps, stolen-key payment reverted on-chain, audit 8/8 anchored. Vault [0x7240…67D7](https://sepolia.etherscan.io/address/0x7240Dd6E8C95BcE6A1CE53BCD44781585bC067D7) (see §2) | `reports/TESTNET_EVIDENCE.md`, `reports/testnet-evidence.json` |
 | E2 | Automated scenario evaluation: 22 tasks + 35 attacks, each on a fresh EVM snapshot, **113 transactions** | private anvil devnet (chain id 31337) | **Done.** Re-run on 19 Oct 2026 after the red-team fixes: **57/57 pass**, task completion 100%, attack prevention 100%, attacker wallets never funded, 23.6 s | `reports/EVAL_REPORT.md`, `reports/eval-results.json` |
 | E3 | Dress rehearsal of E1 with the **same keys and the same script** against a local fork of live Sepolia state (Amsterdam rules, real contract sizes and gas) | anvil fork of Sepolia (not public) | **Done** on 19 Oct 2026: all 14 steps succeeded, audit trail `ok=True, anchored 8/8` | this document, §3 |
 | E4 | Smart-contract tests: 17 unit/fuzz tests + a stateful invariant suite (4 invariants, 128 runs × 64 calls = 8,192 random calls) | Foundry EVM | **Done.** 19 Oct 2026: **18/18 pass** | `contracts/test/KendaliVault.t.sol` |
@@ -51,17 +51,17 @@ git commit -m "Add public Sepolia execution evidence"
 
 ### Public Sepolia hashes (filled after the run)
 
-<!-- FILL-AFTER-SEPOLIA-RUN: copy from reports/TESTNET_EVIDENCE.md -->
+<!-- Filled from the public Sepolia run of 2026-10-20 -->
 | Item | Value |
 |---|---|
-| Run date (UTC) | _pending_ |
-| KendaliVault address | _pending_ |
-| Agent auto-payment (`AutoPaid`) | _pending_ |
-| Owner approval (`ProposalApproved`) | _pending_ |
-| Blocked BEC invoice (`DecisionCommitted`) | _pending_ |
-| Reserve deposit (`ReserveDeposited`) | _pending_ |
-| **Stolen-key payment, reverted** | _pending_ |
-| Audit verification | _pending_ |
+| Run date (UTC) | 2026-10-20 (block 11951752–11951790) |
+| KendaliVault address | [0x7240Dd6E8C95BcE6A1CE53BCD44781585bC067D7](https://sepolia.etherscan.io/address/0x7240Dd6E8C95BcE6A1CE53BCD44781585bC067D7) |
+| Agent auto-payment (`AutoPaid`) | [0x3f1fd6babd…](https://sepolia.etherscan.io/tx/0x3f1fd6babd6a62ec556099683e3675d8517137d088637ca87e90982f675e4a4a) (HX-2026-1042, 540 tUSDC) |
+| Owner approval (`ProposalApproved`) | [0xb4f7e6391f…](https://sepolia.etherscan.io/tx/0xb4f7e6391fe91fdfab9049088d8275901837698c36449528354daed07968e66c) (KTG-0915, 2,850 tUSDC, maker-checker) |
+| Blocked BEC invoice (`DecisionCommitted`) | [0x3d8df640a3…](https://sepolia.etherscan.io/tx/0x3d8df640a3bba2ed3e560d52fec5a11a17a2b514e0ea3ec05186a79762ae2820) (PAYMENT_DETAILS_CHANGED) |
+| Reserve deposit (`ReserveDeposited`) | [0x67e7ba23a5…](https://sepolia.etherscan.io/tx/0x67e7ba23a5f709638aaf9c403d820275bebc7893e44465a30b43bd73dd421ccd) |
+| **Stolen-key payment, reverted** | [0x433d65fd8e…](https://sepolia.etherscan.io/tx/0x433d65fd8eaa577b8af68b094801f4866ccc1b88ca87b67ea258c04b3c3eb3dd) (status 0, `PayeeNotAllowed(attacker)`) |
+| Audit verification | `ok=True`, 8/8 decision hashes anchored on-chain |
 
 The complete table with every hash is generated automatically in [`reports/TESTNET_EVIDENCE.md`](../reports/TESTNET_EVIDENCE.md).
 

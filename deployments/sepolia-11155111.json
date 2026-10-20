@@ -1,0 +1,33 @@
+{
+  "network": "sepolia",
+  "chain_id": 11155111,
+  "usdc": "0xdef97Bc339C6fB189e4e36172BecF869E36367b1",
+  "reserve": "0xa40130d3bB830E27bcd2727F242e2BE06f8Ea6Ab",
+  "vault": "0x7240Dd6E8C95BcE6A1CE53BCD44781585bC067D7",
+  "owner": "0x71Fbf13D39DAbA40Fb556461d46aA7B9b3BC650F",
+  "agent": "0x208699d2Ab3b0bc821c374186dEfcc97305fc9e2",
+  "deployer": "0x1bD652D9EaF19f2a1869932A374528D3332103f8",
+  "block": 11951750,
+  "deploy_txs": {
+    "vault": "0xd34a0f7767da138ea13aa234d510641d35cea9623408797052e52cbb3d103618",
+    "fund": "0x8fe983a950e2e9aeccd04b547c16f39dbadc951e3aab50b16224f54b70c05764"
+  },
+  "params": {
+    "autoLimit": "1000",
+    "dailyAutoLimit": "2500",
+    "hardCap": "10000",
+    "policyDelay": 600,
+    "payeeCooldown": 180,
+    "proposalTtl": 604800,
+    "funding": "25000"
+  },
+  "deployed_at": 1792456476,
+  "payee_txs": {
+    "V001": "0x1f630f1c881d3fa61714ce3f41311f87e9bac8efd690e6d39d13c7eadda62e63",
+    "V002": "0xc2a900ebab4a41562bbbd2faa2762d5f5b21fea2781bc47654787f3258602dd3",
+    "V003": "0xdabadb5458ee6de34d9c7b0c135cc4bcb0d77e55aa92c585c96f3068f91c5c69",
+    "V004": "0x21ecaefd2d018350e84e26eef190ca1dd6e5ecc6f1170bff7c15377cb3360cc5",
+    "V005": "0xc48ba087374cc08717f4723fe86a6a98ad50c60a9be8c98bd394ff722bc8f3a6",
+    "V007": "0x72d3a4b66daf89928249dc39e5f0290e16479d2ae010a085c3a2f3a04ec0e2d2"
+  }
+}

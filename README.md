@@ -80,6 +80,9 @@ python eval/run_eval.py --llm
 ```
 
 ### Public testnet evidence
+**Live on Ethereum Sepolia (20 Oct 2026):** vault [`0x7240Dd6E8C95BcE6A1CE53BCD44781585bC067D7`](https://sepolia.etherscan.io/address/0x7240Dd6E8C95BcE6A1CE53BCD44781585bC067D7) · 14/14 steps · the stolen-key payment [reverts on-chain](https://sepolia.etherscan.io/tx/0x433d65fd8eaa577b8af68b094801f4866ccc1b88ca87b67ea258c04b3c3eb3dd) · audit 8/8 anchored. Every hash: [`reports/TESTNET_EVIDENCE.md`](reports/TESTNET_EVIDENCE.md).
+
+To reproduce on your own Sepolia account:
 ```bash
 python scripts/new_testnet_keys.py --rpc https://ethereum-sepolia-rpc.publicnode.com --network sepolia
 # fund the printed deployer address with test ETH (0.1 Sepolia ETH is plenty), then:
