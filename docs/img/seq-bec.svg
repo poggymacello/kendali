@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 430" width="980" height="430" font-family="Segoe UI, Helvetica Neue, Arial, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#1b2430"/></marker><marker id="r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker><marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0f5c4c"/></marker></defs>
+<rect width="980" height="430" fill="#ffffff"/>
+<text x="490.0" y="26" font-size="16" font-weight="bold" fill="#1b2430" text-anchor="middle">Runtime view (c): business-email-compromise invoice is blocked</text>
+<rect x="23.0" y="52" width="144" height="32" rx="6" fill="#fdecec" stroke="#b91c1c" stroke-width="1.8"/>
+<text x="95.0" y="73" font-size="13.5" font-weight="bold" fill="#b91c1c" text-anchor="middle">Fraudster email</text>
+<line x1="95.0" y1="84" x2="95.0" y2="396" stroke="#cbd5e1" stroke-width="1.4" stroke-dasharray="4,4"/>
+<rect x="220.5" y="52" width="144" height="32" rx="6" fill="#e3f0ec" stroke="#0f5c4c" stroke-width="1.8"/>
+<text x="292.5" y="73" font-size="13.5" font-weight="bold" fill="#0f5c4c" text-anchor="middle">Extractor</text>
+<line x1="292.5" y1="84" x2="292.5" y2="396" stroke="#cbd5e1" stroke-width="1.4" stroke-dasharray="4,4"/>
+<rect x="418.0" y="52" width="144" height="32" rx="6" fill="#e3f0ec" stroke="#0f5c4c" stroke-width="1.8"/>
+<text x="490.0" y="73" font-size="13.5" font-weight="bold" fill="#0f5c4c" text-anchor="middle">Policy engine</text>
+<line x1="490.0" y1="84" x2="490.0" y2="396" stroke="#cbd5e1" stroke-width="1.4" stroke-dasharray="4,4"/>
+<rect x="615.5" y="52" width="144" height="32" rx="6" fill="#f1f5f9" stroke="#475569" stroke-width="1.8"/>
+<text x="687.5" y="73" font-size="13.5" font-weight="bold" fill="#475569" text-anchor="middle">Vendor master</text>
+<line x1="687.5" y1="84" x2="687.5" y2="396" stroke="#cbd5e1" stroke-width="1.4" stroke-dasharray="4,4"/>
+<rect x="813.0" y="52" width="144" height="32" rx="6" fill="#e3f0ec" stroke="#0f5c4c" stroke-width="1.8"/>
+<text x="885.0" y="73" font-size="13.5" font-weight="bold" fill="#0f5c4c" text-anchor="middle">KendaliVault</text>
+<line x1="885.0" y1="84" x2="885.0" y2="396" stroke="#cbd5e1" stroke-width="1.4" stroke-dasharray="4,4"/>
+<line x1="95.0" y1="114" x2="288.5" y2="114" stroke="#b91c1c" stroke-width="1.7" marker-end="url(#r)"/>
+<text x="193.75" y="108" font-size="13" font-weight="normal" fill="#b91c1c" text-anchor="middle" stroke="#ffffff" stroke-width="5" stroke-linejoin="round" paint-order="stroke">invoice: &#x27;our wallet changed, pay urgently&#x27; + new 0x…</text>
+<line x1="292.5" y1="150" x2="486.0" y2="150" stroke="#1b2430" stroke-width="1.7" marker-end="url(#a)"/>
+<text x="391.25" y="144" font-size="13" font-weight="normal" fill="#1b2430" text-anchor="middle" stroke="#ffffff" stroke-width="5" stroke-linejoin="round" paint-order="stroke">Invoice(pay_to = 0xcD20…E249)</text>
+<line x1="490.0" y1="186" x2="683.5" y2="186" stroke="#1b2430" stroke-width="1.7" stroke-dasharray="6,4" marker-end="url(#a)"/>
+<text x="588.75" y="180" font-size="13" font-weight="normal" fill="#1b2430" text-anchor="middle" stroke="#ffffff" stroke-width="5" stroke-linejoin="round" paint-order="stroke">resolve vendor → KYB wallet</text>
+<path d="M490.0,214 h34 v16 h-30" fill="none" stroke="#b91c1c" stroke-width="1.6" marker-end="url(#r)"/>
+<text x="532.0" y="226" font-size="13" font-weight="normal" fill="#b91c1c" text-anchor="start" stroke="#ffffff" stroke-width="5" stroke-linejoin="round" paint-order="stroke">pay_to ≠ KYB wallet → PAYMENT_DETAILS_CHANGED (CRITICAL)</text>
+<path d="M490.0,250 h34 v16 h-30" fill="none" stroke="#1b2430" stroke-width="1.6" marker-end="url(#a)"/>
+<text x="532.0" y="262" font-size="13" font-weight="normal" fill="#1b2430" text-anchor="start" stroke="#ffffff" stroke-width="5" stroke-linejoin="round" paint-order="stroke">pressure language → SOCIAL_ENGINEERING_PRESSURE</text>
+<rect x="312.4" y="278" width="355.20000000000005" height="24" rx="4" fill="#fffbea" stroke="#e5c76b"/>
+<text x="490.0" y="295" font-size="13" font-weight="normal" fill="#1b2430" text-anchor="middle">route() → BLOCK; call-back via contact on file</text>
+<line x1="490.0" y1="330" x2="881.0" y2="330" stroke="#0f5c4c" stroke-width="1.7" marker-end="url(#g)"/>
+<text x="687.5" y="324" font-size="13" font-weight="normal" fill="#0f5c4c" text-anchor="middle" stroke="#ffffff" stroke-width="5" stroke-linejoin="round" paint-order="stroke">commitDecision(hash, Blocked) — no funds move</text>
+<line x1="885.0" y1="366" x2="494.0" y2="366" stroke="#0f5c4c" stroke-width="1.7" stroke-dasharray="6,4" marker-end="url(#g)"/>
+<text x="687.5" y="360" font-size="13" font-weight="normal" fill="#0f5c4c" text-anchor="middle" stroke="#ffffff" stroke-width="5" stroke-linejoin="round" paint-order="stroke">DecisionCommitted(hash, 0)</text>
+<text x="490.0" y="418" font-size="12.5" font-weight="normal" fill="#5b6675" text-anchor="middle">Sepolia: 0x3d8df640… (block 11951783). Eval: A01, A24; poisoning A05, homoglyph A04, A31, A34.</text>
+</svg>

@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 502" width="980" height="502" font-family="Segoe UI, Helvetica Neue, Arial, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#1b2430"/></marker><marker id="r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker><marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0f5c4c"/></marker></defs>
+<rect width="980" height="502" fill="#ffffff"/>
+<text x="490.0" y="26" font-size="16" font-weight="bold" fill="#1b2430" text-anchor="middle">Runtime view (b): maker-checker approval</text>
+<rect x="23.0" y="52" width="144" height="32" rx="6" fill="#e3f0ec" stroke="#0f5c4c" stroke-width="1.8"/>
+<text x="95.0" y="73" font-size="13.5" font-weight="bold" fill="#0f5c4c" text-anchor="middle">Agent</text>
+<line x1="95.0" y1="84" x2="95.0" y2="468" stroke="#cbd5e1" stroke-width="1.4" stroke-dasharray="4,4"/>
+<rect x="286.3333333333333" y="52" width="144" height="32" rx="6" fill="#e3f0ec" stroke="#0f5c4c" stroke-width="1.8"/>
+<text x="358.3333333333333" y="73" font-size="13.5" font-weight="bold" fill="#0f5c4c" text-anchor="middle">KendaliVault</text>
+<line x1="358.3333333333333" y1="84" x2="358.3333333333333" y2="468" stroke="#cbd5e1" stroke-width="1.4" stroke-dasharray="4,4"/>
+<rect x="549.6666666666666" y="52" width="144" height="32" rx="6" fill="#fdf3e1" stroke="#9a5b0b" stroke-width="1.8"/>
+<text x="621.6666666666666" y="73" font-size="13.5" font-weight="bold" fill="#9a5b0b" text-anchor="middle">Owner console</text>
+<line x1="621.6666666666666" y1="84" x2="621.6666666666666" y2="468" stroke="#cbd5e1" stroke-width="1.4" stroke-dasharray="4,4"/>
+<rect x="813.0" y="52" width="144" height="32" rx="6" fill="#f1f5f9" stroke="#475569" stroke-width="1.8"/>
+<text x="885.0" y="73" font-size="13.5" font-weight="bold" fill="#475569" text-anchor="middle">Supplier wallet</text>
+<line x1="885.0" y1="84" x2="885.0" y2="468" stroke="#cbd5e1" stroke-width="1.4" stroke-dasharray="4,4"/>
+<path d="M95.0,106 h34 v16 h-30" fill="none" stroke="#1b2430" stroke-width="1.6" marker-end="url(#a)"/>
+<text x="137.0" y="118" font-size="13" font-weight="normal" fill="#1b2430" text-anchor="start" stroke="#ffffff" stroke-width="5" stroke-linejoin="round" paint-order="stroke">route() → REQUEST_APPROVAL (2,850 &gt; 1,000 solo limit)</text>
+<line x1="95.0" y1="150" x2="354.3333333333333" y2="150" stroke="#1b2430" stroke-width="1.7" stroke-dasharray="6,4" marker-end="url(#a)"/>
+<text x="226.66666666666666" y="144" font-size="13" font-weight="normal" fill="#1b2430" text-anchor="middle" stroke="#ffffff" stroke-width="5" stroke-linejoin="round" paint-order="stroke">eth_call propose(...)  [simulation]</text>
+<line x1="95.0" y1="186" x2="354.3333333333333" y2="186" stroke="#1b2430" stroke-width="1.7" marker-end="url(#a)"/>
+<text x="226.66666666666666" y="180" font-size="13" font-weight="normal" fill="#1b2430" text-anchor="middle" stroke="#ffffff" stroke-width="5" stroke-linejoin="round" paint-order="stroke">propose(to, 2,850, ref, hash) — AGENT key</text>
+<line x1="358.3333333333333" y1="222" x2="99.0" y2="222" stroke="#1b2430" stroke-width="1.7" stroke-dasharray="6,4" marker-end="url(#a)"/>
+<text x="226.66666666666666" y="216" font-size="13" font-weight="normal" fill="#1b2430" text-anchor="middle" stroke="#ffffff" stroke-width="5" stroke-linejoin="round" paint-order="stroke">ProposalCreated(id 0); ref marked used</text>
+<line x1="358.3333333333333" y1="258" x2="617.6666666666666" y2="258" stroke="#1b2430" stroke-width="1.7" stroke-dasharray="6,4" marker-end="url(#a)"/>
+<text x="490.0" y="252" font-size="13" font-weight="normal" fill="#1b2430" text-anchor="middle" stroke="#ffffff" stroke-width="5" stroke-linejoin="round" paint-order="stroke">pending proposal shown with reasons (EN/ID)</text>
+<rect x="494.46666666666664" y="278" width="254.40000000000003" height="24" rx="4" fill="#fffbea" stroke="#e5c76b"/>
+<text x="621.6666666666666" y="295" font-size="13" font-weight="normal" fill="#1b2430" text-anchor="middle">human checks invoice, PO, vendor</text>
+<line x1="621.6666666666666" y1="330" x2="362.3333333333333" y2="330" stroke="#0f5c4c" stroke-width="1.7" marker-end="url(#g)"/>
+<text x="490.0" y="324" font-size="13" font-weight="normal" fill="#0f5c4c" text-anchor="middle" stroke="#ffffff" stroke-width="5" stroke-linejoin="round" paint-order="stroke">approveProposal(0) — OWNER key</text>
+<path d="M358.3333333333333,358 h34 v16 h-30" fill="none" stroke="#1b2430" stroke-width="1.6" marker-end="url(#a)"/>
+<text x="400.3333333333333" y="370" font-size="13" font-weight="normal" fill="#1b2430" text-anchor="start" stroke="#ffffff" stroke-width="5" stroke-linejoin="round" paint-order="stroke">checks: Pending, TTL, payee allowed, ≤ hardCap</text>
+<line x1="358.3333333333333" y1="402" x2="881.0" y2="402" stroke="#0f5c4c" stroke-width="1.7" marker-end="url(#g)"/>
+<text x="621.6666666666666" y="396" font-size="13" font-weight="normal" fill="#0f5c4c" text-anchor="middle" stroke="#ffffff" stroke-width="5" stroke-linejoin="round" paint-order="stroke">safeTransfer 2,850 tUSDC</text>
+<line x1="358.3333333333333" y1="438" x2="617.6666666666666" y2="438" stroke="#0f5c4c" stroke-width="1.7" stroke-dasharray="6,4" marker-end="url(#g)"/>
+<text x="490.0" y="432" font-size="13" font-weight="normal" fill="#0f5c4c" text-anchor="middle" stroke="#ffffff" stroke-width="5" stroke-linejoin="round" paint-order="stroke">ProposalApproved(id, approver, to, amount, hash)</text>
+<text x="490.0" y="490" font-size="12.5" font-weight="normal" fill="#5b6675" text-anchor="middle">Sepolia: propose 0x69245532…, approve 0xb4f7e639… (blocks 11951781–82). Eval: T02, T04, T09, T22.</text>
+</svg>

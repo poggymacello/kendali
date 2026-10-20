@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 394" width="900" height="394" font-family="Segoe UI, Helvetica Neue, Arial, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#1b2430"/></marker><marker id="r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker><marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0f5c4c"/></marker></defs>
+<rect width="900" height="394" fill="#ffffff"/>
+<text x="450.0" y="26" font-size="16" font-weight="bold" fill="#1b2430" text-anchor="middle">Runtime view (d): stolen agent key tries to drain the vault</text>
+<rect x="23.0" y="52" width="144" height="32" rx="6" fill="#fdecec" stroke="#b91c1c" stroke-width="1.8"/>
+<text x="95.0" y="73" font-size="13.5" font-weight="bold" fill="#b91c1c" text-anchor="middle">Attacker: stolen key</text>
+<line x1="95.0" y1="84" x2="95.0" y2="360" stroke="#cbd5e1" stroke-width="1.4" stroke-dasharray="4,4"/>
+<rect x="378.0" y="52" width="144" height="32" rx="6" fill="#e3f0ec" stroke="#0f5c4c" stroke-width="1.8"/>
+<text x="450.0" y="73" font-size="13.5" font-weight="bold" fill="#0f5c4c" text-anchor="middle">KendaliVault</text>
+<line x1="450.0" y1="84" x2="450.0" y2="360" stroke="#cbd5e1" stroke-width="1.4" stroke-dasharray="4,4"/>
+<rect x="733.0" y="52" width="144" height="32" rx="6" fill="#fdf3e1" stroke="#9a5b0b" stroke-width="1.8"/>
+<text x="805.0" y="73" font-size="13.5" font-weight="bold" fill="#9a5b0b" text-anchor="middle">Owner</text>
+<line x1="805.0" y1="84" x2="805.0" y2="360" stroke="#cbd5e1" stroke-width="1.4" stroke-dasharray="4,4"/>
+<rect x="6.0" y="98" width="340.8" height="24" rx="4" fill="#fffbea" stroke="#e5c76b"/>
+<text x="176.4" y="115" font-size="13" font-weight="normal" fill="#1b2430" text-anchor="middle">bypasses LLM, policy and simulation entirely</text>
+<line x1="95.0" y1="150" x2="446.0" y2="150" stroke="#b91c1c" stroke-width="1.7" marker-end="url(#r)"/>
+<text x="272.5" y="144" font-size="13" font-weight="normal" fill="#b91c1c" text-anchor="middle" stroke="#ffffff" stroke-width="5" stroke-linejoin="round" paint-order="stroke">pay(attacker, 100 tUSDC, ref, 0x0) signed with AGENT key</text>
+<path d="M450.0,178 h34 v16 h-30" fill="none" stroke="#1b2430" stroke-width="1.6" marker-end="url(#a)"/>
+<text x="492.0" y="190" font-size="13" font-weight="normal" fill="#1b2430" text-anchor="start" stroke="#ffffff" stroke-width="5" stroke-linejoin="round" paint-order="stroke">onlyAgent ✓  whenNotPaused ✓  payees[attacker].allowed ✗</text>
+<line x1="450.0" y1="222" x2="99.0" y2="222" stroke="#b91c1c" stroke-width="1.7" stroke-dasharray="6,4" marker-end="url(#r)"/>
+<text x="272.5" y="216" font-size="13" font-weight="normal" fill="#b91c1c" text-anchor="middle" stroke="#ffffff" stroke-width="5" stroke-linejoin="round" paint-order="stroke">revert PayeeNotAllowed(attacker) — status 0, no transfer</text>
+<line x1="95.0" y1="258" x2="446.0" y2="258" stroke="#b91c1c" stroke-width="1.7" marker-end="url(#r)"/>
+<text x="272.5" y="252" font-size="13" font-weight="normal" fill="#b91c1c" text-anchor="middle" stroke="#ffffff" stroke-width="5" stroke-linejoin="round" paint-order="stroke">pay(V002, 5,000) / 5 × 999 / approveProposal / addPayee / reused ref</text>
+<line x1="450.0" y1="294" x2="99.0" y2="294" stroke="#b91c1c" stroke-width="1.7" stroke-dasharray="6,4" marker-end="url(#r)"/>
+<text x="272.5" y="288" font-size="13" font-weight="normal" fill="#b91c1c" text-anchor="middle" stroke="#ffffff" stroke-width="5" stroke-linejoin="round" paint-order="stroke">ExceedsAutoLimit / ExceedsDailyLimit / NotOwner / RefAlreadyUsed</text>
+<line x1="805.0" y1="330" x2="454.0" y2="330" stroke="#0f5c4c" stroke-width="1.7" marker-end="url(#g)"/>
+<text x="627.5" y="324" font-size="13" font-weight="normal" fill="#0f5c4c" text-anchor="middle" stroke="#ffffff" stroke-width="5" stroke-linejoin="round" paint-order="stroke">pause() or setAgent(newKey) — immediate</text>
+<text x="450.0" y="382" font-size="12.5" font-weight="normal" fill="#5b6675" text-anchor="middle">Sepolia: 0x433d65fd… status 0 (block 11951790). Eval: A16–A21. Foundry invariants: attacker balance stays 0.</text>
+</svg>

@@ -31,7 +31,7 @@ ROOT = Path(__file__).resolve().parents[2]
 OUT = ROOT / "submission" / "pdf"
 BUILD = ROOT / "submission" / "pdf" / "_build"
 REPO = "https://github.com/poggymacello/kendali"
-VERSION = "1.2"
+VERSION = "1.3"
 ISSUED = date(2026, 10, 20)
 
 DOCS = [
@@ -39,22 +39,24 @@ DOCS = [
         "out": "Kendali_TechnicalDocumentation.pdf",
         "id": "KND-TD-001",
         "title": "Technical Documentation",
-        "subtitle": "Architecture, core algorithms and security design of a policy-bounded AI treasury agent",
+        "subtitle": "Requirements, architecture views, data model, contract interface, core algorithms, security design and test strategy of a policy-bounded AI treasury agent",
         "sources": ["docs/TECHNICAL_DOCUMENTATION.md"],
     },
     {
         "out": "Kendali_SecuritySelfAssessment.pdf",
         "id": "KND-SSA-001",
         "title": "Security Self-Assessment Report",
-        "subtitle": "Permission tiers, threat model, controls, test evidence and known risks",
+        "subtitle": "Permission model, STRIDE threat model, control catalogue, security tests, OWASP LLM and smart-contract mappings, data and privacy, risk register",
         "sources": ["docs/SECURITY_SELF_ASSESSMENT.md"],
     },
     {
         "out": "Kendali_ExecutionEvidence.pdf",
         "id": "KND-EE-001",
         "title": "Execution Evidence",
-        "subtitle": "Public Sepolia transaction hashes and the reproducible 57-scenario evaluation",
+        "subtitle": "Every public Sepolia transaction decoded from the chain, what each proves, and how to verify or reproduce it",
         "sources": ["docs/EXECUTION_EVIDENCE.md", "reports/TESTNET_EVIDENCE.md", "reports/EVAL_REPORT.md"],
+        "part_titles": {1: "Appendix A — Generated testnet report (reports/TESTNET_EVIDENCE.md)",
+                        2: "Appendix B — Per-scenario evaluation report (reports/EVAL_REPORT.md)"},
     },
 ]
 
@@ -62,13 +64,14 @@ HISTORY = [
     ("1.0", "10 Oct 2026", "Initial release with the submission package."),
     ("1.1", "19 Oct 2026", "Red-team round: 15 new probes, PO matching, tolerant extraction; suite 42 → 57 scenarios."),
     ("1.2", "20 Oct 2026", "Public Sepolia run (14/14 steps); execution evidence completed; PDF layout."),
+    ("1.3", "20 Oct 2026", "Restructured to the official templates; requirements, architecture views, data model, contract interface, STRIDE threat model, control catalogue, OWASP LLM / SWC mappings, risk register; every Sepolia transaction decoded from receipts; tests re-run."),
 ]
 
 CSS = r"""
 @page { size: A4; margin: 22mm 18mm 20mm 18mm; }
 :root { --ink:#1b2430; --muted:#5b6675; --accent:#0f5c4c; --accent2:#e3f0ec; --rule:#d6dbe1; --code:#f4f6f8; }
 * { box-sizing: border-box; }
-html { font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif; color: var(--ink); font-size: 10.2pt; line-height: 1.5; }
+html { font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif; color: var(--ink); font-size: 9.7pt; line-height: 1.45; }
 body { margin: 0; }
 a { color: var(--accent); text-decoration: none; word-break: break-word; }
 .cover { height: 297mm; padding: 28mm 22mm 20mm; display: flex; flex-direction: column; page-break-after: always;
@@ -93,17 +96,20 @@ p { margin: 0 0 2.4mm; }
 ul, ol { margin: 0 0 3mm 5mm; padding-left: 4mm; }
 li { margin: .6mm 0; }
 hr { border: 0; border-top: 1px solid var(--rule); margin: 5mm 0; }
-table { border-collapse: collapse; width: 100%; margin: 2mm 0 4mm; font-size: 8.8pt; page-break-inside: auto; }
+table { border-collapse: collapse; width: 100%; margin: 2mm 0 4mm; font-size: 8.3pt; page-break-inside: auto; }
 thead { display: table-header-group; }
 tr { page-break-inside: avoid; }
-th { background: var(--accent); color: #fff; text-align: left; font-weight: 600; padding: 1.6mm 2mm; }
-td { border-bottom: 1px solid var(--rule); padding: 1.4mm 2mm; vertical-align: top; }
+th { background: var(--accent); color: #fff; text-align: left; font-weight: 600; padding: 1.3mm 1.6mm; }
+td { border-bottom: 1px solid var(--rule); padding: 1.1mm 1.6mm; vertical-align: top; }
 tbody tr:nth-child(even) td { background: #f8faf9; }
-code { font-family: Consolas, "Cascadia Mono", monospace; font-size: 8.6pt; background: var(--code); padding: .2mm 1mm; border-radius: 1mm; word-break: break-all; }
+code { font-family: Consolas, "Cascadia Mono", monospace; font-size: 8.2pt; background: var(--code); padding: .2mm .8mm; border-radius: 1mm; word-break: normal; overflow-wrap: anywhere; }
 pre { background: var(--code); border-left: 3px solid var(--accent); padding: 2.5mm 3mm; overflow: hidden; white-space: pre-wrap; word-break: break-all; font-size: 8.4pt; page-break-inside: avoid; }
 pre code { background: none; padding: 0; }
 blockquote { margin: 3mm 0; padding: 2mm 4mm; background: var(--accent2); border-left: 3px solid var(--accent); color: var(--ink); }
 img { max-width: 100%; display: block; margin: 3mm auto; page-break-inside: avoid; }
+img[src*="ui-"] { max-width: 70%; border: 1px solid var(--rule); }
+td a { white-space: nowrap; }
+.nb { white-space: nowrap; }
 .toc h2 { border: 0; }
 .toc ol { list-style: none; margin: 0; padding: 0; }
 .toc li { margin: 1.2mm 0; }
@@ -143,7 +149,15 @@ def embed_images(html_text: str, src: Path) -> str:
     return re.sub(r'<img[^>]*src="([^"]+)"', fix, html_text)
 
 
-def md_to_html(src: Path, part_idx: int) -> tuple[str, list[tuple[int, str, str]]]:
+ID_RE = re.compile(r"\b([A-Z]{1,4}-\d{1,4}[a-z]?)\b")
+
+
+def nobreak_ids(html_text: str) -> str:
+    """Keep identifiers such as TH-01, C-12, FR-07 or R14 on one line (no break after the hyphen)."""
+    return re.sub(r">([^<]+)<", lambda m: ">" + ID_RE.sub(r'<span class="nb">\1</span>', m.group(1)) + "<", html_text)
+
+
+def md_to_html(src: Path, part_idx: int, title_override: str | None = None) -> tuple[str, list[tuple[int, str, str]]]:
     text = src.read_text(encoding="utf-8")
     text = rewrite_links(text, src)
     lines = text.splitlines()
@@ -151,10 +165,13 @@ def md_to_html(src: Path, part_idx: int) -> tuple[str, list[tuple[int, str, str]
     if lines and lines[0].startswith("# "):
         doc_title = lines[0][2:].strip()
         text = "\n".join(lines[1:])
+    if title_override:
+        doc_title = title_override
     md = markdown.Markdown(extensions=["tables", "fenced_code", "sane_lists", "toc", "attr_list"],
                            extension_configs={"toc": {"slugify": lambda v, s: f"p{part_idx}-" + re.sub(r"[^a-z0-9]+", "-", v.lower()).strip("-")}})
     body = md.convert(text)
     body = embed_images(body, src)
+    body = nobreak_ids(body)
     heads = []
     for tok in md.toc_tokens:
         heads.append((2, tok["name"], tok["id"]))
@@ -218,7 +235,7 @@ def control_page(d: dict, toc: list[tuple[int, str, str]]) -> str:
 def build_html(d: dict) -> tuple[str, str]:
     parts, toc = [], []
     for i, s in enumerate(d["sources"]):
-        h, t = md_to_html(ROOT / s, i)
+        h, t = md_to_html(ROOT / s, i, d.get("part_titles", {}).get(i))
         parts.append(h)
         toc += t
     head = f"""<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Kendali — {html.escape(d['title'])}</title>

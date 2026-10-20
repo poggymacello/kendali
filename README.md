@@ -86,7 +86,7 @@ To reproduce on your own Sepolia account:
 ```bash
 python scripts/new_testnet_keys.py --rpc https://ethereum-sepolia-rpc.publicnode.com --network sepolia
 # fund the printed deployer address with test ETH (0.1 Sepolia ETH is plenty), then:
-python scripts/testnet_evidence.py   # ~6 minutes; writes reports/TESTNET_EVIDENCE.md with explorer links
+python scripts/testnet_evidence.py   # ~8-10 minutes (incl. 180 s cooling-off); writes reports/TESTNET_EVIDENCE.md with explorer links
 ```
 Keys are written to `.env`, which is git-ignored. Never reuse them on mainnet. While `.env` exists, the CLI and the Streamlit console talk to Sepolia; rename it (e.g. to `.env.sepolia`) to go back to the local devnet demo. `pytest`, `eval/run_eval.py` and `python -m kendali devnet` always use the local anvil keys. What each transaction proves is explained in [`docs/EXECUTION_EVIDENCE.md`](docs/EXECUTION_EVIDENCE.md).
 

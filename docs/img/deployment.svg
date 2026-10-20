@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 372" width="980" height="372" font-family="Segoe UI, Helvetica Neue, Arial, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#1b2430"/></marker><marker id="r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker><marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0f5c4c"/></marker></defs>
+<rect width="980" height="372" fill="#ffffff"/>
+<text x="490" y="28" font-size="17" font-weight="bold" fill="#1b2430" text-anchor="middle">Deployment view: three environments, same code and contracts</text>
+<rect x="20" y="50" width="300" height="200" rx="8" fill="#e3f0ec" stroke="#0f5c4c" stroke-width="2"/>
+<text x="170.0" y="72" font-size="14" font-weight="bold" fill="#0f5c4c" text-anchor="middle">Local devnet (evaluation)</text>
+<text x="170.0" y="92" font-size="12" font-weight="normal" fill="#1b2430" text-anchor="middle">tested on Windows 11</text>
+<text x="170.0" y="109" font-size="12" font-weight="normal" fill="#1b2430" text-anchor="middle">Python 3.11 · Foundry 1.8.5</text>
+<text x="170.0" y="126" font-size="12" font-weight="normal" fill="#1b2430" text-anchor="middle">anvil, chain id 31337,</text>
+<text x="170.0" y="143" font-size="12" font-weight="normal" fill="#1b2430" text-anchor="middle">fixed clock 2026-10-11 02:00 UTC</text>
+<text x="170.0" y="160" font-size="12" font-weight="normal" fill="#1b2430" text-anchor="middle">anvil dev keys (public, valueless)</text>
+<text x="170.0" y="177" font-size="12" font-weight="normal" fill="#1b2430" text-anchor="middle">cooling-off 1 day, timelock 2 days</text>
+<text x="170.0" y="194" font-size="12" font-weight="normal" fill="#1b2430" text-anchor="middle">Streamlit console on :8501</text>
+<text x="170.0" y="211" font-size="12" font-weight="normal" fill="#1b2430" text-anchor="middle">eval: fresh EVM snapshot per scenario</text>
+<rect x="340" y="50" width="300" height="200" rx="8" fill="#f1f5f9" stroke="#475569" stroke-width="2"/>
+<text x="490.0" y="72" font-size="14" font-weight="bold" fill="#475569" text-anchor="middle">Public testnet (evidence)</text>
+<text x="490.0" y="92" font-size="12" font-weight="normal" fill="#1b2430" text-anchor="middle">Ethereum Sepolia, chain id 11155111</text>
+<text x="490.0" y="109" font-size="12" font-weight="normal" fill="#1b2430" text-anchor="middle">RPC: publicnode.com (HTTPS)</text>
+<text x="490.0" y="126" font-size="12" font-weight="normal" fill="#1b2430" text-anchor="middle">keys generated locally,</text>
+<text x="490.0" y="143" font-size="12" font-weight="normal" fill="#1b2430" text-anchor="middle">stored in git-ignored .env.sepolia</text>
+<text x="490.0" y="160" font-size="12" font-weight="normal" fill="#1b2430" text-anchor="middle">cooling-off 180 s, timelock 600 s</text>
+<text x="490.0" y="177" font-size="12" font-weight="normal" fill="#1b2430" text-anchor="middle">proposal TTL 7 days</text>
+<text x="490.0" y="194" font-size="12" font-weight="normal" fill="#1b2430" text-anchor="middle">tUSDC = valueless MockUSDC</text>
+<text x="490.0" y="211" font-size="12" font-weight="normal" fill="#1b2430" text-anchor="middle">run: scripts/testnet_evidence.py</text>
+<rect x="660" y="50" width="300" height="200" rx="8" fill="#fdf3e1" stroke="#9a5b0b" stroke-width="2"/>
+<text x="810.0" y="72" font-size="14" font-weight="bold" fill="#9a5b0b" text-anchor="middle">Production path (not built)</text>
+<text x="810.0" y="92" font-size="12" font-weight="normal" fill="#1b2430" text-anchor="middle">permissioned EVM chain</text>
+<text x="810.0" y="109" font-size="12" font-weight="normal" fill="#1b2430" text-anchor="middle">(e.g. FISCO BCOS; port untested)</text>
+<text x="810.0" y="126" font-size="12" font-weight="normal" fill="#1b2430" text-anchor="middle">owner = multisig / custodian</text>
+<text x="810.0" y="143" font-size="12" font-weight="normal" fill="#1b2430" text-anchor="middle">agent key in HSM / cloud KMS</text>
+<text x="810.0" y="160" font-size="12" font-weight="normal" fill="#1b2430" text-anchor="middle">ERP sync for vendors + POs</text>
+<text x="810.0" y="177" font-size="12" font-weight="normal" fill="#1b2430" text-anchor="middle">licensed settlement asset</text>
+<text x="810.0" y="194" font-size="12" font-weight="normal" fill="#1b2430" text-anchor="middle">(tokenized deposit, e-CNY-style)</text>
+<text x="810.0" y="211" font-size="12" font-weight="normal" fill="#1b2430" text-anchor="middle">real screening feeds</text>
+<rect x="20" y="268" width="940" height="92" rx="8" fill="#ffffff" stroke="#0f5c4c" stroke-width="1.5" stroke-dasharray="5,4"/>
+<text x="490" y="290" font-size="13.5" font-weight="bold" fill="#0f5c4c" text-anchor="middle">Same artefacts in every environment</text>
+<text x="490" y="312" font-size="12" font-weight="normal" fill="#1b2430" text-anchor="middle">contracts/src (Solidity 0.8.24, Cancun) · kendali/ Python package · data/ reference files · eval/scenarios.yaml</text>
+<text x="490" y="332" font-size="12" font-weight="normal" fill="#5b6675" text-anchor="middle">Only the RPC URL, the three keys and the deployment profile (devnet | testnet) change; see kendali/deploy.py::PARAMS.</text>
+<text x="490" y="350" font-size="12" font-weight="normal" fill="#5b6675" text-anchor="middle">The LLM endpoint is optional in all three; without it the deterministic extractor and NLU are used.</text>
+</svg>
