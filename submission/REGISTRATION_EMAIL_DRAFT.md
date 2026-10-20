@@ -57,13 +57,13 @@ Kept below for reference only.
 **To:** fintechathon@ican-x.com
 **Subject:** `International Track Submission – Kendali – Topic F – Poggy Macello Gultom`
 
-**Attach these 4 PDFs** (all in `submission/pdf/`, ≈2 MB in total, well under Gmail's 25 MB):
+**Attach these 4 PDFs** (all in `submission/pdf/`, ≈3 MB in total, well under Gmail's 25 MB):
 | # | File | Rule item it answers |
 |---|---|---|
-| 1 | `Kendali_TechnicalDocumentation.pdf` (KND-TD-001) | (1) technical documentation: architecture, core algorithms, security design |
+| 1 | `Kendali_TechnicalDocumentation.pdf` (KND-TD-001, 26 pp) | (1) technical documentation: architecture, core algorithms, security design |
 | 2 | `Kendali_FinTechathon2026_Deck.pdf` (13 slides, ≈9.5 min) | (2) presentation deck ≤10 min |
-| 3 | `Kendali_SecuritySelfAssessment.pdf` (KND-SSA-001) | (5) security self-assessment: permission tiers + known risks |
-| 4 | `Kendali_ExecutionEvidence.pdf` (KND-EE-001) | (6) execution evidence: real Sepolia transaction hashes + 57-scenario evaluation |
+| 3 | `Kendali_SecuritySelfAssessment.pdf` (KND-SSA-001, 18 pp) | (5) security self-assessment: permission tiers + known risks |
+| 4 | `Kendali_ExecutionEvidence.pdf` (KND-EE-001, 16 pp) | (6) execution evidence: real Sepolia transaction hashes + 57-scenario evaluation |
 
 Optional 5th attachment: `Kendali_FinTechathon2026_Deck.pptx` (editable original). **Links in the body:** (3) demo video, (4) source code.
 
